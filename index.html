@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Akash Pathak — Data Analytics Portfolio</title>
+<style>
+/* ═══════════════════════════════════════════════════
+   VARS & RESET
+═══════════════════════════════════════════════════ */
+:root{
+  --bg:#07070d; --s1:#0f0f1a; --s2:#141425; --card:#181830;
+  --border:#22223a; --border2:#2d2d50;
+  --accent:#7c6dfa; --green:#00c9a7; --red:#ff6b6b;
+  --yellow:#ffd166; --blue:#4ecdc4; --orange:#ff9f43;
+  --white:#ffffff; --muted:#6b6b8a; --text:#c8c8e8;
+  --font:'Segoe UI',system-ui,sans-serif;
+  --r:16px; --r-sm:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--s1);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px;}
+
+/* ═══════════════════════════════════════════════════
+   CANVAS
+═══════════════════════════════════════════════════ */
+#cv{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ═══════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:62px;padding:0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(7,7,13,.9);backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(124,109,250,.12);
+}
+.nl{display:flex;align-items:center;gap:.7rem;}
+.nl-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent),#a855f7);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;animation:glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(124,109,250,.6)}
+  50%{box-shadow:0 0 0 10px rgba(124,109,250,0)}
+}
+.nl-name{font-weight:800;font-size:1rem;color:var(--white);}
+.nl-name span{color:var(--accent);}
+.nr{display:flex;align-items:center;gap:1.2rem;}
+.nav-a{
+  color:var(--muted);font-size:.82rem;font-weight:500;
+  padding:.35rem .75rem;border-radius:8px;transition:all .2s;
+  text-decoration:none;
+}
+.nav-a:hover{color:var(--accent);background:rgba(124,109,250,.1);}
+.nav-hire{
+  background:linear-gradient(135deg,var(--accent),#a855f7);
+  color:var(--white);padding:.4rem 1.1rem;border-radius:20px;
+  font-size:.8rem;font-weight:700;text-decoration:none;
+  box-shadow:0 4px 15px rgba(124,109,250,.4);
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-hire:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,109,250,.5);}
+
+/* ═══════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════ */
+.hero{
+  position:relative;z-index:1;
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:7rem 2rem 5rem;
+  background:
+    radial-gradient(ellipse at 20% 50%,rgba(124,109,250,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 30%,rgba(0,201,167,.08) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 80%,rgba(255,107,107,.06) 0%,transparent 50%);
+}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);
+  color:var(--accent);padding:.35rem 1.1rem;border-radius:20px;
+  font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:1.8rem;
+  animation:fadeDown .6s ease both;
+}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{
+  font-size:clamp(2.8rem,7vw,5rem);font-weight:900;
+  letter-spacing:-2px;line-height:1.05;margin-bottom:.6rem;
+  animation:fadeUp .7s .1s ease both;
+}
+.hero h1 .name{
+  background:linear-gradient(135deg,var(--white) 30%,var(--accent) 70%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero h1 .role{
+  display:block;font-size:clamp(1.5rem,4vw,2.5rem);font-weight:700;
+  background:linear-gradient(135deg,var(--green),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-top:.2rem;
+}
+.hero-sub{
+  max-width:600px;color:var(--muted);font-size:1rem;line-height:1.75;
+  margin:1rem auto 2.5rem;
+  animation:fadeUp .7s .2s ease both;
+}
+.hero-sub strong{color:var(--text);}
+
+/* PILLS */
+.pills{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;
+  margin-bottom:3rem;
+  animation:fadeUp .7s .3s ease both;
+}
+.pill{
+  padding:.32rem .85rem;border-radius:20px;font-size:.75rem;
+  font-weight:600;border:1px solid;cursor:default;
+  transition:transform .2s,box-shadow .2s;
+}
+.pill:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.3);}
+.pa{background:rgba(124,109,250,.1);border-color:rgba(124,109,250,.35);color:var(--accent);}
+.pg{background:rgba(0,201,167,.1);border-color:rgba(0,201,167,.35);color:var(--green);}
+.pr{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.35);color:var(--red);}
+.py{background:rgba(255,209,102,.1);border-color:rgba(255,209,102,.35);color:var(--yellow);}
+.pb{background:rgba(78,205,196,.1);border-color:rgba(78,205,196,.35);color:var(--blue);}
+.po{background:rgba(255,159,67,.1);border-color:rgba(255,159,67,.35);color:var(--orange);}
+
+/* CTA BUTTONS */
+.hero-ctas{
+  display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;
+  animation:fadeUp .7s .4s ease both;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--accent),#a855f7);
+  color:var(--white);padding:.65rem 1.8rem;border-radius:25px;
+  font-size:.9rem;font-weight:700;text-decoration:none;
+  box-shadow:0 6px 20px rgba(124,109,250,.4);
+  transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:.5rem;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(124,109,250,.5);}
+.btn-outline{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border2);
+  padding:.65rem 1.8rem;border-radius:25px;
+  font-size:.9rem;font-weight:600;text-decoration:none;
+  transition:all .2s;display:inline-flex;align-items:center;gap:.5rem;
+}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,109,250,.06);}
+
+/* SCROLL INDICATOR */
+.scroll-hint{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  color:var(--muted);font-size:.72rem;letter-spacing:.5px;
+  animation:fadeUp .7s .6s ease both;
+}
+.scroll-ring{
+  width:30px;height:30px;border-radius:50%;border:1.5px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  animation:scrollBounce 2s infinite;
+}
+@keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+/* ═══════════════════════════════════════════════════
+   STATS BAR
+═══════════════════════════════════════════════════ */
+.stats-bar{
+  position:relative;z-index:1;
+  background:var(--s1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:1.5rem 2rem;
+  display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;
+}
+.stat{text-align:center;}
+.stat-n{
+  font-size:2rem;font-weight:900;display:block;line-height:1;
+  background:linear-gradient(135deg,var(--white),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-n.g{background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-n.r{background:linear-gradient(135deg,var(--red),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-n.y{background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-l{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:.4rem;}
+
+/* ═══════════════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════════════ */
+.wrap{position:relative;z-index:1;max-width:1300px;margin:0 auto;padding:0 2rem 6rem;}
+
+/* SECTION HEADS */
+.sh{display:flex;align-items:center;gap:.8rem;margin:4.5rem 0 2rem;}
+.sh h2{font-size:1.35rem;font-weight:800;color:var(--white);white-space:nowrap;}
+.sh-badge{
+  padding:.2rem .7rem;border-radius:20px;font-size:.68rem;font-weight:700;white-space:nowrap;
+  background:rgba(124,109,250,.12);border:1px solid rgba(124,109,250,.3);color:var(--accent);
+}
+.sh-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+
+/* ═══════════════════════════════════════════════════
+   PROJECT CARDS
+═══════════════════════════════════════════════════ */
+.projects-grid{display:grid;gap:1.5rem;}
+.pcard{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r);
+  padding:2rem 2rem 2rem 2.5rem;
+  display:grid;grid-template-columns:1fr auto;gap:1.5rem;
+  position:relative;overflow:hidden;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+  opacity:0;transform:translateY(28px);
+}
+.pcard.vis{animation:slideUp .55s ease forwards;}
+@keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+.pcard:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+
+/* left accent bar */
+.pcard::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;
+  background:var(--pc,var(--accent));
+}
+/* glow */
+.pcard::after{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,var(--pc,var(--accent)) 0%,transparent 70%);
+  opacity:.04;transition:opacity .3s;
+}
+.pcard:hover::after{opacity:.08;}
+
+/* number */
+.pcard-num{
+  font-size:4rem;font-weight:900;color:rgba(255,255,255,.04);
+  line-height:1;position:absolute;right:1.5rem;top:1.2rem;
+  font-variant-numeric:tabular-nums;letter-spacing:-2px;
+}
+
+.pcard-top{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:.8rem;}
+.pcard-icon{
+  width:42px;height:42px;border-radius:10px;flex-shrink:0;
+  background:rgba(255,255,255,.05);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.pcard-title{font-size:1.1rem;font-weight:800;color:var(--white);margin-bottom:.25rem;}
+.pcard-domain{font-size:.75rem;color:var(--muted);}
+
+.pcard-desc{font-size:.88rem;color:var(--muted);line-height:1.65;margin-bottom:1.1rem;}
+
+/* results */
+.results{list-style:none;margin-bottom:1.2rem;display:flex;flex-direction:column;gap:.35rem;}
+.results li{
+  font-size:.82rem;color:var(--text);padding:.3rem .6rem;
+  background:rgba(255,255,255,.025);border-radius:6px;
+  border-left:2px solid var(--pc,var(--accent));
+  display:flex;align-items:flex-start;gap:.5rem;
+}
+
+/* tags */
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem;}
+.tag{
+  padding:.18rem .6rem;border-radius:6px;font-size:.7rem;font-weight:600;
+  background:rgba(124,109,250,.08);border:1px solid rgba(124,109,250,.2);color:var(--accent);
+}
+
+/* status + link */
+.pcard-right{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:1rem;min-width:130px;}
+.status-badge{
+  padding:.28rem .8rem;border-radius:20px;font-size:.7rem;font-weight:700;white-space:nowrap;
+}
+.s-done  {background:rgba(0,201,167,.12);color:var(--green);border:1px solid rgba(0,201,167,.3);}
+.s-build {background:rgba(255,209,102,.12);color:var(--yellow);border:1px solid rgba(255,209,102,.3);}
+.s-next  {background:rgba(100,100,130,.12);color:var(--muted);border:1px solid var(--border2);}
+
+.repo-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);
+  color:var(--accent);padding:.4rem .9rem;border-radius:8px;
+  font-size:.75rem;font-weight:700;text-decoration:none;
+  transition:all .2s;white-space:nowrap;
+}
+.repo-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent);}
+
+/* ═══════════════════════════════════════════════════
+   TECH STACK
+═══════════════════════════════════════════════════ */
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1rem;}
+.stack-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:1.25rem 1.4rem;transition:border-color .2s,transform .2s;
+  opacity:0;transform:translateY(20px);
+}
+.stack-card.vis{animation:slideUp .5s ease forwards;}
+.stack-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.sc-label{
+  font-size:.65rem;color:var(--accent);text-transform:uppercase;
+  letter-spacing:1px;font-weight:700;margin-bottom:.7rem;
+  display:flex;align-items:center;gap:.4rem;
+}
+.sc-label::before{content:'';width:12px;height:2px;background:var(--accent);border-radius:1px;}
+.sc-items{display:flex;flex-direction:column;gap:.45rem;}
+.sc-item{
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:.82rem;color:var(--text);
+}
+.sc-bar-wrap{height:3px;background:var(--border2);border-radius:2px;margin-top:.2rem;overflow:hidden;}
+.sc-bar{height:100%;border-radius:2px;background:var(--accent);width:0;transition:width 1.2s ease;}
+
+/* ═══════════════════════════════════════════════════
+   ABOUT / WHAT MAKES ME
+═══════════════════════════════════════════════════ */
+.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.diff-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:1.3rem 1.5rem;display:flex;align-items:flex-start;gap:.9rem;
+  transition:border-color .2s,transform .2s;
+  opacity:0;transform:translateY(20px);
+}
+.diff-card.vis{animation:slideUp .5s ease forwards;}
+.diff-card:hover{border-color:var(--green);transform:translateY(-2px);}
+.diff-icon{
+  width:38px;height:38px;border-radius:10px;flex-shrink:0;
+  background:rgba(0,201,167,.1);border:1px solid rgba(0,201,167,.2);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.diff-title{font-size:.88rem;font-weight:700;color:var(--white);margin-bottom:.3rem;}
+.diff-sub{font-size:.8rem;color:var(--muted);line-height:1.55;}
+
+/* ═══════════════════════════════════════════════════
+   CERTIFICATIONS
+═══════════════════════════════════════════════════ */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;}
+.cert-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);
+  padding:1.2rem 1.4rem;display:flex;align-items:center;gap:1rem;
+  transition:border-color .2s,transform .2s;
+  opacity:0;transform:translateY(20px);
+}
+.cert-card.vis{animation:slideUp .5s ease forwards;}
+.cert-card:hover{border-color:var(--yellow);transform:translateY(-2px);}
+.cert-logo{
+  width:42px;height:42px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);
+}
+.cert-title{font-size:.85rem;font-weight:700;color:var(--white);margin-bottom:.2rem;}
+.cert-issuer{font-size:.72rem;color:var(--muted);}
+.cert-badge{
+  margin-left:auto;padding:.15rem .5rem;border-radius:6px;font-size:.65rem;font-weight:700;
+  background:rgba(0,201,167,.1);color:var(--green);border:1px solid rgba(0,201,167,.2);
+}
+
+/* ═══════════════════════════════════════════════════
+   CONTACT CTA
+═══════════════════════════════════════════════════ */
+.contact-card{
+  background:linear-gradient(135deg,rgba(124,109,250,.1) 0%,rgba(0,201,167,.05) 100%);
+  border:1px solid rgba(124,109,250,.25);border-radius:var(--r);
+  padding:3rem 2rem;text-align:center;margin-top:4rem;
+  position:relative;overflow:hidden;
+}
+.contact-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 100%,rgba(124,109,250,.1) 0%,transparent 60%);
+}
+.contact-card h2{font-size:1.8rem;font-weight:800;color:var(--white);margin-bottom:.6rem;position:relative;}
+.contact-card p{color:var(--muted);margin-bottom:2rem;position:relative;}
+.contact-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;}
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+footer{
+  position:relative;z-index:1;
+  background:var(--s1);border-top:1px solid var(--border);
+  padding:1.8rem 2rem;text-align:center;color:var(--muted);font-size:.82rem;
+}
+footer strong{color:var(--accent);}
+.footer-links{display:flex;justify-content:center;gap:2rem;margin-top:.8rem;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.8rem;transition:color .2s;}
+.footer-links a:hover{color:var(--accent);}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════ */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media(max-width:900px){
+  .diff-grid{grid-template-columns:1fr;}
+  .pcard{grid-template-columns:1fr;}
+  .pcard-right{flex-direction:row;align-items:center;min-width:unset;}
+  .stats-bar{gap:2rem;}
+}
+@media(max-width:600px){
+  .nr .nav-a{display:none;}
+  .hero h1{font-size:2.4rem;}
+  .stats-bar{gap:1.5rem;}
+  .pcard-num{display:none;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="cv"></canvas>
+
+<!-- ══ NAV ══════════════════════════════════════════ -->
+<nav>
+  <div class="nl">
+    <div class="nl-icon">⚡</div>
+    <div class="nl-name">Akash <span>Pathak</span></div>
+  </div>
+  <div class="nr">
+    <a class="nav-a" href="#projects">Projects</a>
+    <a class="nav-a" href="#stack">Stack</a>
+    <a class="nav-a" href="#certs">Certs</a>
+    <a class="nav-a" href="https://github.com/akash-pathak-scientist" target="_blank">GitHub ↗</a>
+    <a class="nav-hire" href="mailto:akash.pathak@email.com">Hire Me →</a>
+  </div>
+</nav>
+
+<!-- ══ HERO ══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-chip"><div class="chip-dot"></div>Open to Data Analyst Roles</div>
+
+  <h1>
+    <span class="name">Akash Pathak</span>
+    <span class="role">Data Analyst</span>
+  </h1>
+
+  <p class="hero-sub">
+    I transform messy datasets into <strong>clear business decisions</strong>.
+    Specialized in <strong>FinTech, BFSI, and Fraud analytics</strong> —
+    with full-stack pipelines: SQL → Python → Power BI.
+  </p>
+
+  <div class="pills">
+    <span class="pill pa">SQL</span>
+    <span class="pill pa">Python</span>
+    <span class="pill pg">Power BI</span>
+    <span class="pill py">Machine Learning</span>
+    <span class="pill pb">EDA</span>
+    <span class="pill pr">Fraud Detection</span>
+    <span class="pill pg">RFM Analysis</span>
+    <span class="pill po">FinTech</span>
+    <span class="pill pa">DAX</span>
+    <span class="pill pb">Cohort Analysis</span>
+    <span class="pill pr">Scikit-learn</span>
+    <span class="pill py">Tableau</span>
+  </div>
+
+  <div class="hero-ctas">
+    <a class="btn-primary" href="https://github.com/akash-pathak-scientist" target="_blank">
+      🐙 View GitHub Profile
+    </a>
+    <a class="btn-outline" href="#projects">
+      📂 Browse Projects
+    </a>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="scroll-ring">↓</div>
+  </div>
+</section>
+
+<!-- ══ STATS BAR ══════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-n" data-count="5">0</span><div class="stat-l">Portfolio Projects</div></div>
+  <div class="stat"><span class="stat-n g" data-count="2">0</span><div class="stat-l">Live on GitHub</div></div>
+  <div class="stat"><span class="stat-n r">₹30Cr+</span><div class="stat-l">Data Analyzed</div></div>
+  <div class="stat"><span class="stat-n y" data-count="30">0</span><div class="stat-l">SQL Queries</div></div>
+  <div class="stat"><span class="stat-n" data-count="4">0</span><div class="stat-l">ML Models</div></div>
+  <div class="stat"><span class="stat-n g">98.14%</span><div class="stat-l">Best AUC-ROC</div></div>
+</div>
+
+<div class="wrap">
+
+<!-- ══ PROJECTS ══════════════════════════════════════ -->
+<div class="sh" id="projects">
+  <h2>📂 Portfolio Projects</h2>
+  <span class="sh-badge">5 Projects</span>
+  <div class="sh-line"></div>
+</div>
+
+<div class="projects-grid">
+
+  <!-- P01 -->
+  <div class="pcard" style="--pc:var(--accent);">
+    <div class="pcard-num">01</div>
+    <div>
+      <div class="pcard-top">
+        <div class="pcard-icon">🏦</div>
+        <div>
+          <div class="pcard-title">FinTech Transaction Analytics</div>
+          <div class="pcard-domain">Banking & Payments · Full-Stack Analytics</div>
+        </div>
+      </div>
+      <p class="pcard-desc">
+        End-to-end analytics pipeline on 15,000 payment transactions — covering KPIs, MoM trends,
+        merchant intelligence, user segmentation, and real-time fraud signals. Deployed as a live
+        Flask dashboard with 12 REST API endpoints.
+      </p>
+      <ul class="results">
+        <li>🔴 Identified <strong>₹1.45Cr at-risk volume</strong> via 3 fraud signal detectors</li>
+        <li>👥 RFM segmented 2,982 users → Champion · Loyal · At Risk · Dormant</li>
+        <li>📈 30+ SQL queries — Window Functions, CTEs, Cohort Retention, Fraud Velocity</li>
+        <li>📊 9-panel dark dashboard + 12 REST APIs — all routes tested 200 OK</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">SQL</span><span class="tag">Python</span><span class="tag">Power BI</span>
+        <span class="tag">Flask</span><span class="tag">RFM</span><span class="tag">Fraud Detection</span>
+        <span class="tag">EDA</span><span class="tag">Pandas</span>
+      </div>
+    </div>
+    <div class="pcard-right">
+      <span class="status-badge s-done">✅ Complete</span>
+      <a class="repo-btn" href="https://github.com/akash-pathak-scientist/fintech-transaction-analytics" target="_blank">GitHub ↗</a>
+    </div>
+  </div>
+
+  <!-- P02 -->
+  <div class="pcard" style="--pc:var(--red);">
+    <div class="pcard-num">02</div>
+    <div>
+      <div class="pcard-top">
+        <div class="pcard-icon">🛡️</div>
+        <div>
+          <div class="pcard-title">Credit Card Fraud Detection</div>
+          <div class="pcard-domain">Risk & Fraud · Machine Learning</div>
+        </div>
+      </div>
+      <p class="pcard-desc">
+        ML pipeline on 50,000 transactions with extreme class imbalance (0.174% fraud).
+        4 models trained, benchmarked, and evaluated — Random Forest achieves 98.14% AUC-ROC.
+        Live animated Flask dashboard with particle effects and scroll animations.
+      </p>
+      <ul class="results">
+        <li>🤖 <strong>Random Forest → 98.14% AUC-ROC</strong> (best model)</li>
+        <li>⚖️ Handled extreme imbalance via class_weight="balanced" strategy</li>
+        <li>🔍 Feature engineering: log(Amount), Amt_Z z-score, Hour extraction</li>
+        <li>🚨 3 SQL fraud rules: Probe pattern, Velocity abuse, Composite risk score</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">Random Forest</span>
+        <span class="tag">Isolation Forest</span><span class="tag">ROC-AUC</span><span class="tag">EDA</span>
+        <span class="tag">Flask</span><span class="tag">ML</span>
+      </div>
+    </div>
+    <div class="pcard-right">
+      <span class="status-badge s-done">✅ Complete</span>
+      <a class="repo-btn" href="https://github.com/akash-pathak-scientist/credit-card-fraud-detection" target="_blank">GitHub ↗</a>
+    </div>
+  </div>
+
+  <!-- P03 -->
+  <div class="pcard" style="--pc:var(--green);">
+    <div class="pcard-num">03</div>
+    <div>
+      <div class="pcard-top">
+        <div class="pcard-icon">🛒</div>
+        <div>
+          <div class="pcard-title">Customer & Sales Analytics</div>
+          <div class="pcard-domain">Retail / CRM · Business Intelligence</div>
+        </div>
+      </div>
+      <p class="pcard-desc">
+        Full customer analytics pipeline — cohort retention, LTV modeling, sales funnel analysis,
+        and regional performance breakdown across 50K+ customer records with Power BI dashboard.
+      </p>
+      <ul class="results">
+        <li>📦 50K+ customers segmented by LTV and churn probability</li>
+        <li>📉 3-month rolling cohort retention analysis</li>
+        <li>💰 22% revenue uplift strategy from At Risk segment identification</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">SQL</span><span class="tag">Power BI</span><span class="tag">Excel</span>
+        <span class="tag">Cohort</span><span class="tag">LTV</span><span class="tag">Sales</span>
+      </div>
+    </div>
+    <div class="pcard-right">
+      <span class="status-badge s-build">🔨 Building</span>
+      <span class="repo-btn" style="opacity:.5;cursor:not-allowed;">Soon ⏳</span>
+    </div>
+  </div>
+
+  <!-- P04 -->
+  <div class="pcard" style="--pc:var(--yellow);">
+    <div class="pcard-num">04</div>
+    <div>
+      <div class="pcard-top">
+        <div class="pcard-icon">📊</div>
+        <div>
+          <div class="pcard-title">Finance / MIS Dashboard</div>
+          <div class="pcard-domain">Corporate Finance · CFO Reporting</div>
+        </div>
+      </div>
+      <p class="pcard-desc">
+        CFO-level financial reporting dashboard with P&L, budget variance, EBITDA tracking,
+        and department-level drill-down. Automates monthly MIS reporting using Power BI + DAX.
+      </p>
+      <ul class="results">
+        <li>⚡ Automated 40 hrs/month manual MIS reporting</li>
+        <li>📐 YTD · MTD · QoQ DAX measures across 8 cost centers</li>
+        <li>🎯 Budget vs Actual variance alerts for leadership review</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Excel</span><span class="tag">Power BI</span>
+        <span class="tag">DAX</span><span class="tag">MIS</span><span class="tag">Finance</span>
+      </div>
+    </div>
+    <div class="pcard-right">
+      <span class="status-badge s-next">⏳ Planned</span>
+      <span class="repo-btn" style="opacity:.5;cursor:not-allowed;">Soon ⏳</span>
+    </div>
+  </div>
+
+  <!-- P05 -->
+  <div class="pcard" style="--pc:var(--blue);">
+    <div class="pcard-num">05</div>
+    <div>
+      <div class="pcard-top">
+        <div class="pcard-icon">₿</div>
+        <div>
+          <div class="pcard-title">Crypto & Payment Analytics</div>
+          <div class="pcard-domain">Blockchain · Web3 · API Data</div>
+        </div>
+      </div>
+      <p class="pcard-desc">
+        On-chain transaction analytics across 6 blockchain networks using live APIs.
+        Wallet clustering, whale detection, and cross-chain volume correlation analysis.
+      </p>
+      <ul class="results">
+        <li>🔗 Live data via CoinGecko + Etherscan + BSCScan APIs</li>
+        <li>🐋 Wallet segmentation: whale · retail · bot detection</li>
+        <li>📈 Cross-chain volume correlation across 6 networks</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Python</span><span class="tag">APIs</span>
+        <span class="tag">SQL</span><span class="tag">Blockchain</span><span class="tag">Pandas</span>
+      </div>
+    </div>
+    <div class="pcard-right">
+      <span class="status-badge s-next">⏳ Planned</span>
+      <span class="repo-btn" style="opacity:.5;cursor:not-allowed;">Soon ⏳</span>
+    </div>
+  </div>
+
+</div><!-- /projects -->
+
+<!-- ══ TECH STACK ══════════════════════════════════════ -->
+<div class="sh" id="stack">
+  <h2>🛠️ Tech Stack</h2>
+  <span class="sh-badge">Skills</span>
+  <div class="sh-line"></div>
+</div>
+
+<div class="stack-grid">
+  <div class="stack-card">
+    <div class="sc-label">Databases & Query</div>
+    <div class="sc-items">
+      <div><div class="sc-item"><span>MySQL</span><span style="color:var(--accent);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="92" style="background:var(--accent)"></div></div></div>
+      <div><div class="sc-item"><span>PostgreSQL</span><span style="color:var(--accent);font-size:.75rem;font-weight:700;">Proficient</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="80" style="background:var(--accent)"></div></div></div>
+      <div><div class="sc-item"><span>MS SQL Server</span><span style="color:var(--accent);font-size:.75rem;font-weight:700;">Working</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="70" style="background:var(--accent)"></div></div></div>
+    </div>
+  </div>
+  <div class="stack-card">
+    <div class="sc-label">Python Ecosystem</div>
+    <div class="sc-items">
+      <div><div class="sc-item"><span>Pandas / NumPy</span><span style="color:var(--green);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="90" style="background:var(--green)"></div></div></div>
+      <div><div class="sc-item"><span>Scikit-learn</span><span style="color:var(--green);font-size:.75rem;font-weight:700;">Proficient</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="78" style="background:var(--green)"></div></div></div>
+      <div><div class="sc-item"><span>Matplotlib / Seaborn</span><span style="color:var(--green);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="88" style="background:var(--green)"></div></div></div>
+    </div>
+  </div>
+  <div class="stack-card">
+    <div class="sc-label">Visualization & BI</div>
+    <div class="sc-items">
+      <div><div class="sc-item"><span>Power BI + DAX</span><span style="color:var(--yellow);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="85" style="background:var(--yellow)"></div></div></div>
+      <div><div class="sc-item"><span>Tableau</span><span style="color:var(--yellow);font-size:.75rem;font-weight:700;">Proficient</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="75" style="background:var(--yellow)"></div></div></div>
+      <div><div class="sc-item"><span>Excel (Pivot, VBA)</span><span style="color:var(--yellow);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="88" style="background:var(--yellow)"></div></div></div>
+    </div>
+  </div>
+  <div class="stack-card">
+    <div class="sc-label">Analytics Skills</div>
+    <div class="sc-items">
+      <div><div class="sc-item"><span>EDA & Storytelling</span><span style="color:var(--blue);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="92" style="background:var(--blue)"></div></div></div>
+      <div><div class="sc-item"><span>RFM / Cohort</span><span style="color:var(--blue);font-size:.75rem;font-weight:700;">Advanced</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="87" style="background:var(--blue)"></div></div></div>
+      <div><div class="sc-item"><span>ML (Classification)</span><span style="color:var(--blue);font-size:.75rem;font-weight:700;">Proficient</span></div><div class="sc-bar-wrap"><div class="sc-bar" data-w="78" style="background:var(--blue)"></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WHAT MAKES ME DIFFERENT ══════════════════════ -->
+<div class="sh">
+  <h2>🔥 What Makes Me Different</h2>
+  <span class="sh-badge">Mindset</span>
+  <div class="sh-line"></div>
+</div>
+
+<div class="diff-grid">
+  <div class="diff-card">
+    <div class="diff-icon">🎯</div>
+    <div><div class="diff-title">Business-First Thinking</div><div class="diff-sub">I frame the business problem before opening a single dataset. Every analysis starts with a question that matters to decision-makers.</div></div>
+  </div>
+  <div class="diff-card">
+    <div class="diff-icon">🔗</div>
+    <div><div class="diff-title">Full-Stack Analytics</div><div class="diff-sub">Every project delivers SQL + Python + Dashboard — a complete end-to-end pipeline, not just isolated scripts or charts.</div></div>
+  </div>
+  <div class="diff-card">
+    <div class="diff-icon">💬</div>
+    <div><div class="diff-title">Stakeholder-Ready Insights</div><div class="diff-sub">Insights are written for CFOs, PMs, and business teams — not just data reviewers. Clarity over complexity, always.</div></div>
+  </div>
+  <div class="diff-card">
+    <div class="diff-icon">🏗️</div>
+    <div><div class="diff-title">Production-Grade Code</div><div class="diff-sub">Flask REST APIs, modular Python, clean SQL with Window Functions and CTEs — code that actually runs in a real environment.</div></div>
+  </div>
+</div>
+
+<!-- ══ CERTIFICATIONS ══════════════════════════════════ -->
+<div class="sh" id="certs">
+  <h2>🏅 Certifications</h2>
+  <span class="sh-badge">Verified</span>
+  <div class="sh-line"></div>
+</div>
+
+<div class="cert-grid">
+  <div class="cert-card">
+    <div class="cert-logo">🎓</div>
+    <div><div class="cert-title">Google Data Analytics Professional</div><div class="cert-issuer">Coursera / Google · 2024</div></div>
+    <span class="cert-badge">Certified</span>
+  </div>
+  <div class="cert-card">
+    <div class="cert-logo">📊</div>
+    <div><div class="cert-title">Power BI Data Analyst PL-300</div><div class="cert-issuer">Microsoft · 2024</div></div>
+    <span class="cert-badge">Certified</span>
+  </div>
+  <div class="cert-card">
+    <div class="cert-logo">🏆</div>
+    <div><div class="cert-title">SQL — Gold Badge</div><div class="cert-issuer">HackerRank</div></div>
+    <span class="cert-badge">Gold</span>
+  </div>
+  <div class="cert-card">
+    <div class="cert-logo">🐍</div>
+    <div><div class="cert-title">Python for Data Science</div><div class="cert-issuer">IBM / Coursera</div></div>
+    <span class="cert-badge">Certified</span>
+  </div>
+</div>
+
+<!-- ══ CONTACT CTA ══════════════════════════════════════ -->
+<div class="contact-card">
+  <h2>💬 Let's Build Something Together</h2>
+  <p>Open to Data Analyst roles · Collaborations · Freelance Analytics Projects</p>
+  <div class="contact-btns">
+    <a class="btn-primary" href="mailto:akash.pathak@email.com">📧 Email Me</a>
+    <a class="btn-outline" href="https://linkedin.com/in/akash-pathak-scientist" target="_blank">💼 LinkedIn</a>
+    <a class="btn-outline" href="https://github.com/akash-pathak-scientist" target="_blank">🐙 GitHub</a>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<footer>
+  <strong>Akash Pathak</strong> · Data Analytics Portfolio · India 🇮🇳
+  <div class="footer-links">
+    <a href="https://github.com/akash-pathak-scientist/fintech-transaction-analytics" target="_blank">Project 01 — FinTech</a>
+    <a href="https://github.com/akash-pathak-scientist/credit-card-fraud-detection" target="_blank">Project 02 — Fraud</a>
+    <a href="https://github.com/akash-pathak-scientist" target="_blank">GitHub Profile</a>
+  </div>
+  <div style="margin-top:.8rem;font-size:.72rem;color:rgba(255,255,255,.1);">
+    SQL · Python · Power BI · Machine Learning · Flask
+  </div>
+</footer>
+
+<script>
+/* ── PARTICLES ─────────────────────────────────── */
+(function(){
+  const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+  let W,H,pts=[];
+  const COLORS=['#7c6dfa','#00c9a7','#ff6b6b','#ffd166','#4ecdc4'];
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;init();}
+  function init(){
+    pts=[];
+    for(let i=0;i<55;i++) pts.push({
+      x:Math.random()*W, y:Math.random()*H,
+      vx:(Math.random()-.5)*.3, vy:(Math.random()-.5)*.3,
+      r:Math.random()*1.8+.5,
+      c:COLORS[Math.floor(Math.random()*COLORS.length)]
+    });
+  }
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.c+'55';ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);
+        if(d<130){
+          ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle=`rgba(124,109,250,${.1*(1-d/130)})`;ctx.lineWidth=.7;ctx.stroke();
+        }
+      }
+    requestAnimationFrame(tick);
+  }
+  addEventListener('resize',resize);resize();tick();
+})();
+
+/* ── SCROLL REVEAL ────────────────────────────── */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      const delay=e.target.dataset.delay||i*70;
+      setTimeout(()=>{
+        e.target.classList.add('vis');
+        // animate skill bars
+        e.target.querySelectorAll('.sc-bar[data-w]').forEach(b=>{
+          setTimeout(()=>{b.style.width=b.dataset.w+'%';},400);
+        });
+      },delay);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.12});
+
+document.querySelectorAll('.pcard,.stack-card,.diff-card,.cert-card').forEach((el,i)=>{
+  el.dataset.delay=i*80;io.observe(el);
+});
+
+/* ── COUNT-UP ─────────────────────────────────── */
+function countUp(el,to){
+  let n=0,step=Math.max(1,Math.ceil(to/50));
+  const t=setInterval(()=>{
+    n=Math.min(n+step,to);el.textContent=n.toLocaleString();
+    if(n>=to)clearInterval(t);
+  },30);
+}
+const cio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const v=parseInt(e.target.dataset.count);
+      if(!isNaN(v))countUp(e.target,v);
+      cio.unobserve(e.target);
+    }
+  });
+},{threshold:.6});
+document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+/* ── NAV ACTIVE HIGHLIGHT ─────────────────────── */
+const sections=document.querySelectorAll('[id]');
+const navAs=document.querySelectorAll('.nav-a');
+const sio=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navAs.forEach(a=>{
+        a.style.color= a.getAttribute('href')==='#'+e.target.id ? 'var(--accent)' : '';
+      });
+    }
+  });
+},{threshold:.4});
+sections.forEach(s=>sio.observe(s));
+</script>
+
+</body>
+</html>
