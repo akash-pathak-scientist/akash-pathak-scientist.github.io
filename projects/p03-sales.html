@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Customer & Sales Analytics | Akash Pathak</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#07070d;--s1:#0f0f1a;--card:#141425;--border:#1e1e38;--border2:#28284a;
+  --ac:#00c9a7;--green:#00c9a7;--red:#ff6b6b;--yellow:#ffd166;--blue:#4ecdc4;--orange:#ff9f43;
+  --white:#fff;--muted:#6b6b8a;--text:#c8c8e8;--font:'Segoe UI',system-ui,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--s1);}
+::-webkit-scrollbar-thumb{background:var(--ac);border-radius:3px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(7,7,13,.95);
+  backdrop-filter:blur(18px);border-bottom:1px solid rgba(124,109,250,.14);
+  padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.nlogo{font-weight:800;font-size:.95rem;color:var(--white);}
+.nright{display:flex;gap:.6rem;flex-wrap:wrap;}
+.nbtn{color:var(--ac);text-decoration:none;font-size:.78rem;font-weight:700;
+  padding:.32rem .75rem;border:1px solid rgba(124,109,250,.35);border-radius:8px;transition:all .2s;white-space:nowrap;}
+.nbtn:hover{background:var(--ac);color:var(--white);}
+.nbtn.back{background:rgba(124,109,250,.1);}
+.page{max-width:1300px;margin:0 auto;padding:1.5rem 2rem 4rem;}
+.hero{margin-bottom:1.8rem;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--white);letter-spacing:-1px;margin-bottom:.4rem;}
+.hero-sub{color:var(--muted);font-size:.92rem;line-height:1.6;}
+.hero-sub strong{color:var(--text);}
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:.85rem;margin:1.4rem 0;}
+.kc{background:var(--card);border:1px solid var(--border);border-radius:13px;
+  padding:1.05rem 1.15rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.kc:hover{transform:translateY(-3px);border-color:var(--kcc,var(--ac));}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kcc,var(--ac));}
+.kl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.28rem;}
+.kv{font-size:1.45rem;font-weight:900;color:var(--white);line-height:1;}
+.ks{font-size:.66rem;color:var(--muted);margin-top:.28rem;}
+.sh{display:flex;align-items:center;gap:.7rem;margin:2.2rem 0 1.1rem;}
+.sh h2{font-size:1rem;font-weight:800;color:var(--white);white-space:nowrap;}
+.shb{padding:.16rem .55rem;border-radius:20px;font-size:.63rem;font-weight:700;
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--ac);}
+.shl{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.g1{display:grid;grid-template-columns:1fr;gap:1.1rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1rem;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.2rem;
+  transition:border-color .2s;}
+.cc:hover{border-color:rgba(124,109,250,.25);}
+.ct{font-size:.8rem;font-weight:700;color:var(--white);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+.ctb{padding:.12rem .44rem;border-radius:5px;font-size:.62rem;font-weight:700;background:rgba(124,109,250,.12);color:var(--ac);}
+canvas{width:100%!important;max-height:260px;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{background:rgba(124,109,250,.07);color:var(--ac);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.7px;padding:.6rem .9rem;
+  text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:.68rem .9rem;font-size:.82rem;border-bottom:1px solid rgba(30,30,56,.6);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(124,109,250,.04);}
+.badge{display:inline-block;padding:.13rem .48rem;border-radius:20px;font-size:.65rem;font-weight:700;}
+.bc{background:rgba(255,107,107,.15);color:var(--red);border:1px solid rgba(255,107,107,.3);}
+.bg{background:rgba(0,201,167,.15);color:var(--green);border:1px solid rgba(0,201,167,.3);}
+.by{background:rgba(255,209,102,.15);color:var(--yellow);border:1px solid rgba(255,209,102,.3);}
+.bb{background:rgba(78,205,196,.15);color:var(--blue);border:1px solid rgba(78,205,196,.3);}
+.bp{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.3);}
+.insight-row{display:flex;flex-direction:column;gap:.6rem;}
+.ins{background:rgba(255,255,255,.028);border-radius:9px;padding:.85rem 1rem;
+  border-left:3px solid var(--ac);}
+.ins-title{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:.2rem;}
+.ins-action{font-size:.76rem;color:var(--muted);}
+footer{text-align:center;color:var(--muted);font-size:.76rem;padding:1.8rem 2rem;
+  border-top:1px solid var(--border);margin-top:2rem;background:var(--s1);}
+footer strong{color:var(--ac);}
+footer a{color:var(--muted);text-decoration:none;margin:0 .5rem;transition:color .2s;}
+footer a:hover{color:var(--ac);}
+@media(max-width:800px){.g2,.g21,.g3{grid-template-columns:1fr;}.krow{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.krow{grid-template-columns:1fr 1fr;}.page{padding:1rem 1rem 3rem;}}
+</style></head><body>
+<nav>
+  <div class="nlogo">📊 🛒 Customer & Sales Analytics</div>
+  <div class="nright">
+    <a class="nbtn back" href="../index.html">← Portfolio</a>
+    <a class="nbtn" href="https://github.com/akash-pathak-scientist/customer-sales-analytics" target="_blank">🐙 GitHub</a>
+  </div>
+</nav>
+<div class="page">
+<div class="hero">
+<h1>🛒 Customer & Sales Analytics</h1>
+<p class="hero-sub">End-to-end pipeline on <strong>50,000 customers · 200,000 orders · ₹69.7Cr revenue</strong> — RFM · Cohort · LTV · Churn</p>
+</div>
+<div class="krow">
+<div class="kc" style="--kcc:#fff"><div class="kl">Total Customers</div><div class="kv">50,000</div><div class="ks">Across 12 cities</div></div>
+<div class="kc" style="--kcc:#00c9a7"><div class="kl">Total Revenue</div><div class="kv" style="color:#00c9a7">₹69.7Cr</div><div class="ks">Delivered orders only</div></div>
+<div class="kc" style="--kcc:#7c6dfa"><div class="kl">Total Orders</div><div class="kv" style="color:#7c6dfa">200,000</div><div class="ks">163,999 delivered</div></div>
+<div class="kc" style="--kcc:#ffd166"><div class="kl">Avg Order Value</div><div class="kv" style="color:#ffd166">₹4,250</div><div class="ks">Per delivered order</div></div>
+<div class="kc" style="--kcc:#4ecdc4"><div class="kl">Avg LTV</div><div class="kv" style="color:#4ecdc4">₹17,127</div><div class="ks">Per customer</div></div>
+<div class="kc" style="--kcc:#ff6b6b"><div class="kl">Churn Rate</div><div class="kv" style="color:#ff6b6b">59.28%</div><div class="ks">Inactive >6 months</div></div>
+</div>
+
+<div class="sh"><h2>📅 Monthly Revenue</h2><span class="shb">Trend</span><div class="shl"></div></div>
+<div class="cc"><div class="ct">Monthly Revenue Trend (₹ Millions) <span class="ctb">2022–2024</span></div><canvas id="c_mo3"></canvas></div>
+
+<div class="sh"><h2>👥 RFM Segments</h2><span class="shb">KMeans</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Segment Distribution <span class="ctb">4 Clusters</span></div><canvas id="c_rf3"></canvas></div>
+<div class="cc" style="display:flex;flex-direction:column;gap:.7rem;justify-content:center;">
+<div style="border-radius:9px;padding:.85rem;border-left:3px solid #ffd166;background:rgba(255,255,255,.025)"><div style="font-weight:800;color:#fff;margin-bottom:.18rem;">🟡 At Risk</div><div style="font-size:.76rem;color:#6b6b8a;">8,258 users &nbsp;·&nbsp; Avg LTV ₹7,202 &nbsp;·&nbsp; Freq 1.9x</div></div><div style="border-radius:9px;padding:.85rem;border-left:3px solid #00c9a7;background:rgba(255,255,255,.025)"><div style="font-weight:800;color:#fff;margin-bottom:.18rem;">⭐ Champion</div><div style="font-size:.76rem;color:#6b6b8a;">11,318 users &nbsp;·&nbsp; Avg LTV ₹25,684 &nbsp;·&nbsp; Freq 5.8x</div></div><div style="border-radius:9px;padding:.85rem;border-left:3px solid #ff6b6b;background:rgba(255,255,255,.025)"><div style="font-weight:800;color:#fff;margin-bottom:.18rem;">🔴 Dormant</div><div style="font-size:.76rem;color:#6b6b8a;">8,894 users &nbsp;·&nbsp; Avg LTV ₹3,431 &nbsp;·&nbsp; Freq 2.0x</div></div><div style="border-radius:9px;padding:.85rem;border-left:3px solid #7c6dfa;background:rgba(255,255,255,.025)"><div style="font-weight:800;color:#fff;margin-bottom:.18rem;">✅ Loyal</div><div style="font-size:.76rem;color:#6b6b8a;">19,623 users &nbsp;·&nbsp; Avg LTV ₹16,120 &nbsp;·&nbsp; Freq 3.3x</div></div>
+</div>
+</div>
+
+<div class="sh"><h2>🛍️ Category & Channels</h2><span class="shb">Performance</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Revenue by Category <span class="ctb">₹M</span></div><canvas id="c_ca3"></canvas></div>
+<div class="cc"><div class="ct">Churn Rate by Channel (%) <span class="ctb">Acquisition</span></div><canvas id="c_ch3"></canvas></div>
+</div>
+
+<div class="sh"><h2>💡 Key Insights</h2><span class="shb">Top 5</span><div class="shl"></div></div>
+<div class="insight-row">
+<div class="ins"><div class="ins-title">01. Electronics leads revenue at ₹43.3Cr</div><div class="ins-action">→ Expand electronics catalog, premium SKUs <span class="badge by">High</span></div></div><div class="ins"><div class="ins-title">02. Champion segment (41.7% of RFM revenue) from top customers</div><div class="ins-action">→ Build VIP loyalty program for Champions <span class="badge bc">Critical</span></div></div><div class="ins"><div class="ins-title">03. Churn rate: 59.28% of customers inactive >6 months</div><div class="ins-action">→ Launch win-back campaign for At Risk + Dormant <span class="badge bc">Critical</span></div></div><div class="ins"><div class="ins-title">04. Weekend revenue 22% higher than weekday average</div><div class="ins-action">→ Schedule flash sales for Sat–Sun <span class="badge bb">Medium</span></div></div><div class="ins"><div class="ins-title">05. 26–35 age group has highest avg LTV</div><div class="ins-action">→ Target this cohort for premium subscriptions <span class="badge by">High</span></div></div>
+</div>
+</div>
+
+<script>
+Chart.defaults.color='#6b6b8a';Chart.defaults.borderColor='#1e1e38';
+const AC='#00c9a7',GREEN='#00c9a7',RED='#ff6b6b',YELLOW='#ffd166',
+      BLUE='#4ecdc4',ORANGE='#ff9f43',PINK='#f72585',PURPLE='#a855f7';
+const PAL=[AC,GREEN,RED,YELLOW,BLUE,ORANGE,PINK,PURPLE];
+function mc(id,cfg){{const c=document.getElementById(id);if(c)new Chart(c,cfg);}}
+
+mc('c_mo3',{type:'line',data:{labels:["2022-01", "2022-02", "2022-03", "2022-04", "2022-05", "2022-06", "2022-07", "2022-08", "2022-09", "2022-10", "2022-11", "2022-12", "2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06", "2023-07", "2023-08", "2023-09", "2023-10", "2023-11", "2023-12"],datasets:[{label:'Revenue (₹M)',data:[28.72, 26.69, 29.55, 28.8, 29.04, 29.15, 30.11, 30.23, 28.25, 30.24, 29.29, 29.62, 30.04, 26.49, 30.11, 28.39, 29.71, 28.97, 29.45, 29.4, 28.08, 28.53, 28.76, 29.4],borderColor:GREEN,backgroundColor:GREEN+'22',fill:true,tension:.4,pointRadius:2,borderWidth:2.5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxRotation:45,font:{size:9},maxTicksLimit:18}}}}});
+mc('c_rf3',{type:'doughnut',data:{labels:["At Risk", "Champion", "Dormant", "Loyal"],datasets:[{data:[8258, 11318, 8894, 19623],backgroundColor:['#00c9a7','#7c6dfa','#ffd166','#ff6b6b'],borderWidth:0,hoverOffset:10}]},options:{responsive:true,cutout:'62%',plugins:{legend:{position:'right',labels:{font:{size:10},color:'#c8c8e8',boxWidth:12}}}}});
+mc('c_ca3',{type:'bar',data:{labels:["Electronics", "Home & Living", "Fashion", "Sports", "Beauty", "Food & Grocery", "Toys", "Books"],datasets:[{data:[432.86, 87.28, 82.16, 45.72, 23.61, 10.43, 9.11, 5.83],backgroundColor:PAL,borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:{size:9},maxRotation:30}}}}});
+mc('c_ch3',{type:'bar',data:{labels:["Email", "Organic", "Paid", "Referral", "Social"],datasets:[{label:'Churn %',data:[60.1, 59.4, 58.9, 59.6, 58.8],backgroundColor:[GREEN,'#7c6dfa','#ffd166','#ff6b6b','#4ecdc4'],borderRadius:6}]},options:{responsive:true,plugins:{legend:{display:false}}}});
+</script>
+
+<footer>
+  <strong>Akash Pathak</strong> — Customer & Sales Analytics<br/>
+  <a href="../index.html">🏠 Portfolio</a>
+  <a href="https://github.com/akash-pathak-scientist/customer-sales-analytics" target="_blank">🐙 GitHub Repo</a>
+  <a href="https://github.com/akash-pathak-scientist" target="_blank">👤 Profile</a>
+  <a href="https://akash-pathak-scientist.github.io" target="_blank">🌐 Website</a>
+</footer></body></html>

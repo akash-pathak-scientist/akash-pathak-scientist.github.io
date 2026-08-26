@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Finance / MIS Dashboard | Akash Pathak</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#07070d;--s1:#0f0f1a;--card:#141425;--border:#1e1e38;--border2:#28284a;
+  --ac:#ffd166;--green:#00c9a7;--red:#ff6b6b;--yellow:#ffd166;--blue:#4ecdc4;--orange:#ff9f43;
+  --white:#fff;--muted:#6b6b8a;--text:#c8c8e8;--font:'Segoe UI',system-ui,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--s1);}
+::-webkit-scrollbar-thumb{background:var(--ac);border-radius:3px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(7,7,13,.95);
+  backdrop-filter:blur(18px);border-bottom:1px solid rgba(124,109,250,.14);
+  padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.nlogo{font-weight:800;font-size:.95rem;color:var(--white);}
+.nright{display:flex;gap:.6rem;flex-wrap:wrap;}
+.nbtn{color:var(--ac);text-decoration:none;font-size:.78rem;font-weight:700;
+  padding:.32rem .75rem;border:1px solid rgba(124,109,250,.35);border-radius:8px;transition:all .2s;white-space:nowrap;}
+.nbtn:hover{background:var(--ac);color:var(--white);}
+.nbtn.back{background:rgba(124,109,250,.1);}
+.page{max-width:1300px;margin:0 auto;padding:1.5rem 2rem 4rem;}
+.hero{margin-bottom:1.8rem;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--white);letter-spacing:-1px;margin-bottom:.4rem;}
+.hero-sub{color:var(--muted);font-size:.92rem;line-height:1.6;}
+.hero-sub strong{color:var(--text);}
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:.85rem;margin:1.4rem 0;}
+.kc{background:var(--card);border:1px solid var(--border);border-radius:13px;
+  padding:1.05rem 1.15rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.kc:hover{transform:translateY(-3px);border-color:var(--kcc,var(--ac));}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kcc,var(--ac));}
+.kl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.28rem;}
+.kv{font-size:1.45rem;font-weight:900;color:var(--white);line-height:1;}
+.ks{font-size:.66rem;color:var(--muted);margin-top:.28rem;}
+.sh{display:flex;align-items:center;gap:.7rem;margin:2.2rem 0 1.1rem;}
+.sh h2{font-size:1rem;font-weight:800;color:var(--white);white-space:nowrap;}
+.shb{padding:.16rem .55rem;border-radius:20px;font-size:.63rem;font-weight:700;
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--ac);}
+.shl{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.g1{display:grid;grid-template-columns:1fr;gap:1.1rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1rem;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.2rem;
+  transition:border-color .2s;}
+.cc:hover{border-color:rgba(124,109,250,.25);}
+.ct{font-size:.8rem;font-weight:700;color:var(--white);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+.ctb{padding:.12rem .44rem;border-radius:5px;font-size:.62rem;font-weight:700;background:rgba(124,109,250,.12);color:var(--ac);}
+canvas{width:100%!important;max-height:260px;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{background:rgba(124,109,250,.07);color:var(--ac);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.7px;padding:.6rem .9rem;
+  text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:.68rem .9rem;font-size:.82rem;border-bottom:1px solid rgba(30,30,56,.6);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(124,109,250,.04);}
+.badge{display:inline-block;padding:.13rem .48rem;border-radius:20px;font-size:.65rem;font-weight:700;}
+.bc{background:rgba(255,107,107,.15);color:var(--red);border:1px solid rgba(255,107,107,.3);}
+.bg{background:rgba(0,201,167,.15);color:var(--green);border:1px solid rgba(0,201,167,.3);}
+.by{background:rgba(255,209,102,.15);color:var(--yellow);border:1px solid rgba(255,209,102,.3);}
+.bb{background:rgba(78,205,196,.15);color:var(--blue);border:1px solid rgba(78,205,196,.3);}
+.bp{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.3);}
+.insight-row{display:flex;flex-direction:column;gap:.6rem;}
+.ins{background:rgba(255,255,255,.028);border-radius:9px;padding:.85rem 1rem;
+  border-left:3px solid var(--ac);}
+.ins-title{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:.2rem;}
+.ins-action{font-size:.76rem;color:var(--muted);}
+footer{text-align:center;color:var(--muted);font-size:.76rem;padding:1.8rem 2rem;
+  border-top:1px solid var(--border);margin-top:2rem;background:var(--s1);}
+footer strong{color:var(--ac);}
+footer a{color:var(--muted);text-decoration:none;margin:0 .5rem;transition:color .2s;}
+footer a:hover{color:var(--ac);}
+@media(max-width:800px){.g2,.g21,.g3{grid-template-columns:1fr;}.krow{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.krow{grid-template-columns:1fr 1fr;}.page{padding:1rem 1rem 3rem;}}
+</style></head><body>
+<nav>
+  <div class="nlogo">📊 📊 Finance / MIS Dashboard</div>
+  <div class="nright">
+    <a class="nbtn back" href="../index.html">← Portfolio</a>
+    <a class="nbtn" href="https://github.com/akash-pathak-scientist/finance-mis-dashboard" target="_blank">🐙 GitHub</a>
+  </div>
+</nav>
+<div class="page">
+<div class="hero">
+<h1>📊 Finance / MIS Dashboard</h1>
+<p class="hero-sub">CFO-level reporting across <strong>24 months · 8 departments</strong> — P&L · EBITDA · Budget Variance · Cash Flow · YoY Analysis</p>
+</div>
+<div class="krow">
+<div class="kc" style="--kcc:#fff"><div class="kl">FY2024 Revenue</div><div class="kv">₹13.07Cr</div><div class="ks">YoY +16.91%</div></div>
+<div class="kc" style="--kcc:#00c9a7"><div class="kl">Gross Profit</div><div class="kv" style="color:#00c9a7">₹6.23Cr</div><div class="ks">Margin: 47.63%</div></div>
+<div class="kc" style="--kcc:#7c6dfa"><div class="kl">EBITDA</div><div class="kv" style="color:#7c6dfa">₹1.71Cr</div><div class="ks">Margin: 13.05%</div></div>
+<div class="kc" style="--kcc:#ffd166"><div class="kl">Net Profit (PAT)</div><div class="kv" style="color:#ffd166">₹1.03Cr</div><div class="ks">Net margin: 7.89%</div></div>
+<div class="kc" style="--kcc:#00c9a7"><div class="kl">Budget Variance</div><div class="kv" style="color:#00c9a7">-3.5%</div><div class="ks">Under budget</div></div>
+<div class="kc" style="--kcc:#ff9f43"><div class="kl">YoY Growth</div><div class="kv" style="color:#ff9f43">+16.91%</div><div class="ks">FY2024 vs FY2023</div></div>
+</div>
+
+<div class="sh"><h2>📈 Revenue Trend</h2><span class="shb">24 Months</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Monthly Revenue (₹M) <span class="ctb">Actual</span></div><canvas id="c_rev4"></canvas></div>
+<div class="cc"><div class="ct">Margin Trends (%) <span class="ctb">Gross · EBITDA · Net</span></div><canvas id="c_mar4"></canvas></div>
+</div>
+
+<div class="sh"><h2>🎯 Budget vs Actual</h2><span class="shb">8 Departments</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Budget vs Actual (₹M) <span class="ctb">FY 2024</span></div><canvas id="c_bd4"></canvas></div>
+<div class="cc"><div class="ct">Variance % by Department <span class="ctb">RAG</span></div><canvas id="c_var4"></canvas></div>
+</div>
+
+<div class="sh"><h2>📊 Quarterly & OpEx</h2><span class="shb">Breakdown</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Quarterly Revenue & EBITDA (₹M) <span class="ctb">8 Quarters</span></div><canvas id="c_qt4"></canvas></div>
+<div class="cc"><div class="ct">OpEx Breakdown <span class="ctb">FY 2024</span></div><canvas id="c_op4"></canvas></div>
+</div>
+
+<div class="sh"><h2>💡 CFO Insights</h2><span class="shb">Top 5</span><div class="shl"></div></div>
+<div class="insight-row">
+<div class="ins" style="border-color:#ffd166"><div class="ins-title">01. FY2024 Revenue ₹13.1Cr — YoY growth of 16.9%</div><div class="ins-action">→ Maintain growth momentum; expand to Tier-2 markets <span class="badge bg">Info</span></div></div><div class="ins" style="border-color:#ffd166"><div class="ins-title">02. EBITDA Margin at 13.0% — healthy but below 20% target</div><div class="ins-action">→ Review OpEx; reduce marketing spend by 8% <span class="badge by">High</span></div></div><div class="ins" style="border-color:#ffd166"><div class="ins-title">03. Gross Margin 47.6% — COGS control critical</div><div class="ins-action">→ Renegotiate supplier contracts; target 50% COGS ratio <span class="badge by">High</span></div></div><div class="ins" style="border-color:#ffd166"><div class="ins-title">04. 3 departments exceeded budget — Engineering, Sales, R&D</div><div class="ins-action">→ Implement monthly budget review gates <span class="badge bc">Critical</span></div></div><div class="ins" style="border-color:#ffd166"><div class="ins-title">05. Net Margin at 7.9% — improving QoQ in H2 2024</div><div class="ins-action">→ Target 12% net margin by EOY 2025 <span class="badge by">High</span></div></div>
+</div>
+
+<div class="sh"><h2>📋 Budget Detail</h2><span class="shb">All Departments</span><div class="shl"></div></div>
+<div class="cc"><table class="tbl">
+<thead><tr><th>Department</th><th>Budget</th><th>Actual</th><th>Variance</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>Sales</strong></td><td>₹45,000,000</td><td>₹42,357,000</td><td style="color:#00c9a7;font-weight:700">-2,643,000</td><td><span class="badge bg">Under Budget</span></td></tr><tr><td><strong>Marketing</strong></td><td>₹18,000,000</td><td>₹19,623,000</td><td style="color:#ff6b6b;font-weight:700">+1,623,000</td><td><span class="badge bc">Over Budget</span></td></tr><tr><td><strong>Engineering</strong></td><td>₹35,000,000</td><td>₹34,175,000</td><td style="color:#00c9a7;font-weight:700">-825,000</td><td><span class="badge bg">Under Budget</span></td></tr><tr><td><strong>HR</strong></td><td>₹12,000,000</td><td>₹12,177,000</td><td style="color:#ff6b6b;font-weight:700">+177,000</td><td><span class="badge bc">Over Budget</span></td></tr><tr><td><strong>Operations</strong></td><td>₹28,000,000</td><td>₹25,794,000</td><td style="color:#00c9a7;font-weight:700">-2,206,000</td><td><span class="badge bg">Under Budget</span></td></tr><tr><td><strong>Finance</strong></td><td>₹8,000,000</td><td>₹7,057,000</td><td style="color:#00c9a7;font-weight:700">-943,000</td><td><span class="badge bg">Under Budget</span></td></tr><tr><td><strong>R&D</strong></td><td>₹22,000,000</td><td>₹21,518,000</td><td style="color:#00c9a7;font-weight:700">-482,000</td><td><span class="badge bg">Under Budget</span></td></tr><tr><td><strong>Customer Success</strong></td><td>₹10,000,000</td><td>₹9,048,000</td><td style="color:#00c9a7;font-weight:700">-952,000</td><td><span class="badge bg">Under Budget</span></td></tr>
+</tbody></table></div>
+</div>
+
+<script>
+Chart.defaults.color='#6b6b8a';Chart.defaults.borderColor='#1e1e38';
+const AC='#ffd166',GREEN='#00c9a7',RED='#ff6b6b',YELLOW='#ffd166',
+      BLUE='#4ecdc4',ORANGE='#ff9f43',PINK='#f72585',PURPLE='#a855f7';
+const PAL=[AC,GREEN,RED,YELLOW,BLUE,ORANGE,PINK,PURPLE];
+function mc(id,cfg){{const c=document.getElementById(id);if(c)new Chart(c,cfg);}}
+
+const months4=["Jan 2023", "Feb 2023", "Mar 2023", "Apr 2023", "May 2023", "Jun 2023", "Jul 2023", "Aug 2023", "Sep 2023", "Oct 2023", "Nov 2023", "Dec 2023", "Jan 2024", "Feb 2024", "Mar 2024", "Apr 2024", "May 2024", "Jun 2024", "Jul 2024", "Aug 2024", "Sep 2024", "Oct 2024", "Nov 2024", "Dec 2024"];
+const rev4=[8.93, 9.38, 9.66, 9.94, 10.22, 9.98, 8.47, 8.42, 8.65, 8.64, 9.32, 10.19, 10.04, 11.14, 12.12, 12.11, 11.42, 10.98, 10.8, 9.84, 10.02, 10.66, 10.38, 11.21];
+const gm4=[48.85, 47.04, 49.05, 48.25, 46.47, 48.85, 46.86, 46.97, 48.33, 49.09, 48.32, 49.74, 47.61, 46.65, 46.43, 49.19, 47.99, 46.42, 48.97, 46.54, 49.94, 47.79, 47.89, 46.3];
+const em4=[14.41, 12.68, 13.09, 13.8, 12.89, 13.44, 13.25, 14.97, 14.43, 13.24, 11.64, 19.25, 12.81, 11.2, 10.08, 16.98, 15.21, 11.03, 13.78, 10.47, 15.48, 13.52, 14.54, 11.38];
+const nm4=[8.49, 7.31, 7.68, 8.28, 7.65, 8.02, 7.5, 8.78, 8.44, 7.54, 6.52, 12.41, 7.55, 6.55, 5.86, 11.03, 9.6, 6.39, 8.43, 5.75, 9.55, 8.2, 8.92, 6.7];
+mc('c_rev4',{type:'line',data:{labels:months4,datasets:[{label:'Revenue(₹M)',data:rev4,borderColor:YELLOW,backgroundColor:YELLOW+'22',fill:true,tension:.4,pointRadius:2,borderWidth:2.5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxRotation:45,font:{size:9},maxTicksLimit:12}}}}});
+mc('c_mar4',{type:'line',data:{labels:months4,datasets:[
+  {label:'Gross%',data:gm4,borderColor:GREEN,tension:.4,pointRadius:2,borderWidth:2},
+  {label:'EBITDA%',data:em4,borderColor:'#7c6dfa',tension:.4,pointRadius:2,borderWidth:2},
+  {label:'Net%',data:nm4,borderColor:YELLOW,tension:.4,pointRadius:2,borderWidth:2}
+]},options:{responsive:true,plugins:{legend:{labels:{color:'#c8c8e8',font:{size:9}}}},scales:{x:{ticks:{maxRotation:45,font:{size:9},maxTicksLimit:12}}}}});
+mc('c_bd4',{type:'bar',data:{labels:["Sales", "Marketing", "Engineering", "HR", "Operations", "Finance", "R&D", "Customer Success"],datasets:[
+  {label:'Budget',data:[45.0, 18.0, 35.0, 12.0, 28.0, 8.0, 22.0, 10.0],backgroundColor:'#7c6dfa',borderRadius:5},
+  {label:'Actual',data:[42.4, 19.6, 34.2, 12.2, 25.8, 7.1, 21.5, 9.0],backgroundColor:["#00c9a7", "#ff6b6b", "#00c9a7", "#ff6b6b", "#00c9a7", "#00c9a7", "#00c9a7", "#00c9a7"],borderRadius:5}
+]},options:{responsive:true,plugins:{legend:{labels:{color:'#c8c8e8',font:{size:10}}}},scales:{x:{ticks:{maxRotation:30,font:{size:9}}}}}});
+mc('c_var4',{type:'bar',data:{labels:["Sales", "Marketing", "Engineering", "HR", "Operations", "Finance", "R&D", "Customer Success"],datasets:[{label:'Variance%',data:[-5.87, 9.01, -2.36, 1.47, -7.88, -11.79, -2.19, -9.52],backgroundColor:["#00c9a7", "#ff6b6b", "#00c9a7", "#ff6b6b", "#00c9a7", "#00c9a7", "#00c9a7", "#00c9a7"],borderRadius:5}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
+mc('c_qt4',{type:'bar',data:{labels:["2023Q1", "2023Q2", "2023Q3", "2023Q4", "2024Q1", "2024Q2", "2024Q3", "2024Q4"],datasets:[
+  {label:'Revenue(₹M)',data:[28.0, 30.1, 25.5, 28.2, 33.3, 34.5, 30.7, 32.3],backgroundColor:GREEN,borderRadius:5},
+  {label:'EBITDA(₹M)',data:[3.7, 4.0, 3.6, 4.2, 3.8, 5.0, 4.1, 4.2],backgroundColor:'#7c6dfa',borderRadius:5}
+]},options:{responsive:true,plugins:{legend:{labels:{color:'#c8c8e8',font:{size:10}}}}}});
+mc('c_op4',{type:'doughnut',data:{labels:["Salaries & Benefits", "Marketing", "Infrastructure", "Admin & Overhead"],datasets:[{data:[26.4, 10.1, 5.4, 3.3],backgroundColor:['#7c6dfa','#ff6b6b','#4ecdc4','#ff9f43'],borderWidth:0,hoverOffset:10}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:10},color:'#c8c8e8',boxWidth:12}}}}});
+</script>
+
+<footer>
+  <strong>Akash Pathak</strong> — Finance / MIS Dashboard<br/>
+  <a href="../index.html">🏠 Portfolio</a>
+  <a href="https://github.com/akash-pathak-scientist/finance-mis-dashboard" target="_blank">🐙 GitHub Repo</a>
+  <a href="https://github.com/akash-pathak-scientist" target="_blank">👤 Profile</a>
+  <a href="https://akash-pathak-scientist.github.io" target="_blank">🌐 Website</a>
+</footer></body></html>

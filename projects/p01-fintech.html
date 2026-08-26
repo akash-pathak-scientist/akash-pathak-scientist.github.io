@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>FinTech Transaction Analytics | Akash Pathak</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#07070d;--s1:#0f0f1a;--card:#141425;--border:#1e1e38;--border2:#28284a;
+  --ac:#7c6dfa;--green:#00c9a7;--red:#ff6b6b;--yellow:#ffd166;--blue:#4ecdc4;--orange:#ff9f43;
+  --white:#fff;--muted:#6b6b8a;--text:#c8c8e8;--font:'Segoe UI',system-ui,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--s1);}
+::-webkit-scrollbar-thumb{background:var(--ac);border-radius:3px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(7,7,13,.95);
+  backdrop-filter:blur(18px);border-bottom:1px solid rgba(124,109,250,.14);
+  padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.nlogo{font-weight:800;font-size:.95rem;color:var(--white);}
+.nright{display:flex;gap:.6rem;flex-wrap:wrap;}
+.nbtn{color:var(--ac);text-decoration:none;font-size:.78rem;font-weight:700;
+  padding:.32rem .75rem;border:1px solid rgba(124,109,250,.35);border-radius:8px;transition:all .2s;white-space:nowrap;}
+.nbtn:hover{background:var(--ac);color:var(--white);}
+.nbtn.back{background:rgba(124,109,250,.1);}
+.page{max-width:1300px;margin:0 auto;padding:1.5rem 2rem 4rem;}
+.hero{margin-bottom:1.8rem;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--white);letter-spacing:-1px;margin-bottom:.4rem;}
+.hero-sub{color:var(--muted);font-size:.92rem;line-height:1.6;}
+.hero-sub strong{color:var(--text);}
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:.85rem;margin:1.4rem 0;}
+.kc{background:var(--card);border:1px solid var(--border);border-radius:13px;
+  padding:1.05rem 1.15rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.kc:hover{transform:translateY(-3px);border-color:var(--kcc,var(--ac));}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kcc,var(--ac));}
+.kl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.28rem;}
+.kv{font-size:1.45rem;font-weight:900;color:var(--white);line-height:1;}
+.ks{font-size:.66rem;color:var(--muted);margin-top:.28rem;}
+.sh{display:flex;align-items:center;gap:.7rem;margin:2.2rem 0 1.1rem;}
+.sh h2{font-size:1rem;font-weight:800;color:var(--white);white-space:nowrap;}
+.shb{padding:.16rem .55rem;border-radius:20px;font-size:.63rem;font-weight:700;
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--ac);}
+.shl{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.g1{display:grid;grid-template-columns:1fr;gap:1.1rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1rem;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:1.1rem;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.2rem;
+  transition:border-color .2s;}
+.cc:hover{border-color:rgba(124,109,250,.25);}
+.ct{font-size:.8rem;font-weight:700;color:var(--white);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+.ctb{padding:.12rem .44rem;border-radius:5px;font-size:.62rem;font-weight:700;background:rgba(124,109,250,.12);color:var(--ac);}
+canvas{width:100%!important;max-height:260px;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{background:rgba(124,109,250,.07);color:var(--ac);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.7px;padding:.6rem .9rem;
+  text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:.68rem .9rem;font-size:.82rem;border-bottom:1px solid rgba(30,30,56,.6);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(124,109,250,.04);}
+.badge{display:inline-block;padding:.13rem .48rem;border-radius:20px;font-size:.65rem;font-weight:700;}
+.bc{background:rgba(255,107,107,.15);color:var(--red);border:1px solid rgba(255,107,107,.3);}
+.bg{background:rgba(0,201,167,.15);color:var(--green);border:1px solid rgba(0,201,167,.3);}
+.by{background:rgba(255,209,102,.15);color:var(--yellow);border:1px solid rgba(255,209,102,.3);}
+.bb{background:rgba(78,205,196,.15);color:var(--blue);border:1px solid rgba(78,205,196,.3);}
+.bp{background:rgba(168,85,247,.15);color:#a855f7;border:1px solid rgba(168,85,247,.3);}
+.insight-row{display:flex;flex-direction:column;gap:.6rem;}
+.ins{background:rgba(255,255,255,.028);border-radius:9px;padding:.85rem 1rem;
+  border-left:3px solid var(--ac);}
+.ins-title{font-size:.82rem;font-weight:700;color:var(--white);margin-bottom:.2rem;}
+.ins-action{font-size:.76rem;color:var(--muted);}
+footer{text-align:center;color:var(--muted);font-size:.76rem;padding:1.8rem 2rem;
+  border-top:1px solid var(--border);margin-top:2rem;background:var(--s1);}
+footer strong{color:var(--ac);}
+footer a{color:var(--muted);text-decoration:none;margin:0 .5rem;transition:color .2s;}
+footer a:hover{color:var(--ac);}
+@media(max-width:800px){.g2,.g21,.g3{grid-template-columns:1fr;}.krow{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.krow{grid-template-columns:1fr 1fr;}.page{padding:1rem 1rem 3rem;}}
+</style></head><body>
+<nav>
+  <div class="nlogo">📊 🏦 FinTech Transaction Analytics</div>
+  <div class="nright">
+    <a class="nbtn back" href="../index.html">← Portfolio</a>
+    <a class="nbtn" href="https://github.com/akash-pathak-scientist/fintech-transaction-analytics" target="_blank">🐙 GitHub</a>
+  </div>
+</nav>
+<div class="page">
+<div class="hero">
+<h1>🏦 FinTech Transaction Analytics</h1>
+<p class="hero-sub">End-to-end pipeline on <strong>15,000 transactions</strong> — KPIs · RFM Segmentation · Fraud Detection · MoM Trends · Power BI</p>
+</div>
+<div class="krow">
+<div class="kc" style="--kcc:#fff"><div class="kl">Total Transactions</div><div class="kv">15,000</div><div class="ks">All statuses · FY 2024</div></div>
+<div class="kc" style="--kcc:#00c9a7"><div class="kl">Total Volume</div><div class="kv" style="color:#00c9a7">₹30.6Cr</div><div class="ks">Successful txns only</div></div>
+<div class="kc" style="--kcc:#7c6dfa"><div class="kl">Unique Users</div><div class="kv" style="color:#7c6dfa">2,982</div><div class="ks">Active in 2024</div></div>
+<div class="kc" style="--kcc:#ffd166"><div class="kl">Avg Transaction</div><div class="kv" style="color:#ffd166">₹23,427</div><div class="ks">Per successful txn</div></div>
+<div class="kc" style="--kcc:#4ecdc4"><div class="kl">Success Rate</div><div class="kv" style="color:#4ecdc4">87.21%</div><div class="ks">13,082 transactions</div></div>
+<div class="kc" style="--kcc:#ff6b6b"><div class="kl">Flagged Txns</div><div class="kv" style="color:#ff6b6b">636</div><div class="ks">₹1.45Cr at risk</div></div>
+</div>
+
+<div class="sh"><h2>📈 Monthly Volume Trend</h2><span class="shb">MoM</span><div class="shl"></div></div>
+<div class="g1"><div class="cc"><div class="ct">Monthly Transaction Volume (₹ Millions) <span class="ctb">2024</span></div><canvas id="c_mo1"></canvas></div></div>
+
+<div class="sh"><h2>💳 Channel & Category</h2><span class="shb">Breakdown</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Volume by Payment Mode <span class="ctb">₹M</span></div><canvas id="c_pm1"></canvas></div>
+<div class="cc"><div class="ct">Spend by Category <span class="ctb">Share</span></div><canvas id="c_ca1"></canvas></div>
+</div>
+
+<div class="sh"><h2>👥 RFM Segmentation</h2><span class="shb">4 Clusters</span><div class="shl"></div></div>
+<div class="g21">
+<div class="cc">
+<div class="ct">Segment Distribution <span class="ctb">RFM Score</span></div>
+<canvas id="c_rf1"></canvas></div>
+<div class="cc" style="display:flex;flex-direction:column;gap:.75rem;justify-content:center;">
+<div style="background:rgba(255,255,255,.03);border-radius:9px;padding:.85rem;border-left:3px solid #ff6b6b"><div style="font-weight:800;color:#fff;margin-bottom:.2rem;">🔴 Dormant</div><div style="font-size:.77rem;color:#6b6b8a;">713 users &nbsp;·&nbsp; Avg ₹14,923 &nbsp;·&nbsp; Recency 150d</div></div><div style="background:rgba(255,255,255,.03);border-radius:9px;padding:.85rem;border-left:3px solid #ffd166"><div style="font-weight:800;color:#fff;margin-bottom:.2rem;">🟡 At Risk</div><div style="font-size:.77rem;color:#6b6b8a;">727 users &nbsp;·&nbsp; Avg ₹61,852 &nbsp;·&nbsp; Recency 86d</div></div><div style="background:rgba(255,255,255,.03);border-radius:9px;padding:.85rem;border-left:3px solid #7c6dfa"><div style="font-weight:800;color:#fff;margin-bottom:.2rem;">✅ Loyal</div><div style="font-size:.77rem;color:#6b6b8a;">749 users &nbsp;·&nbsp; Avg ₹119,936 &nbsp;·&nbsp; Recency 58d</div></div><div style="background:rgba(255,255,255,.03);border-radius:9px;padding:.85rem;border-left:3px solid #00c9a7"><div style="font-weight:800;color:#fff;margin-bottom:.2rem;">⭐ Champion</div><div style="font-size:.77rem;color:#6b6b8a;">775 users &nbsp;·&nbsp; Avg ₹207,779 &nbsp;·&nbsp; Recency 27d</div></div>
+</div>
+</div>
+
+<div class="sh"><h2>🚨 Fraud Signals</h2><span class="shb">Risk Detection</span><div class="shl"></div></div>
+<div class="g3">
+<div class="cc" style="text-align:center"><div class="kl" style="margin-bottom:.6rem;">🌙 Late Night High-Value</div><div style="font-size:2.2rem;font-weight:900;color:#ff6b6b">61</div><div class="ks" style="margin-top:.5rem;">12AM–5AM · Amount > ₹50,000</div></div>
+<div class="cc" style="text-align:center"><div class="kl" style="margin-bottom:.6rem;">✈️ Multi-City Same Day</div><div style="font-size:2.2rem;font-weight:900;color:#ff6b6b">71</div><div class="ks" style="margin-top:.5rem;">Impossible travel signal</div></div>
+<div class="cc" style="text-align:center"><div class="kl" style="margin-bottom:.6rem;">💸 At-Risk Volume</div><div style="font-size:2.2rem;font-weight:900;color:#ff6b6b">₹1.45Cr</div><div class="ks" style="margin-top:.5rem;">Total flagged amount</div></div>
+</div>
+
+<div class="sh"><h2>🏪 Top Merchants & Cities</h2><span class="shb">Performance</span><div class="shl"></div></div>
+<div class="g2">
+<div class="cc"><div class="ct">Top Merchants by Revenue <span class="ctb">Top 8</span></div><canvas id="c_me1"></canvas></div>
+<div class="cc"><div class="ct">Top Cities by Volume <span class="ctb">Top 8</span></div><canvas id="c_ci1"></canvas></div>
+</div>
+</div>
+
+<script>
+Chart.defaults.color='#6b6b8a';Chart.defaults.borderColor='#1e1e38';
+const AC='#7c6dfa',GREEN='#00c9a7',RED='#ff6b6b',YELLOW='#ffd166',
+      BLUE='#4ecdc4',ORANGE='#ff9f43',PINK='#f72585',PURPLE='#a855f7';
+const PAL=[AC,GREEN,RED,YELLOW,BLUE,ORANGE,PINK,PURPLE];
+function mc(id,cfg){{const c=document.getElementById(id);if(c)new Chart(c,cfg);}}
+
+mc('c_mo1',{type:'line',data:{labels:["2024-01", "2024-02", "2024-03", "2024-04", "2024-05", "2024-06", "2024-07", "2024-08", "2024-09", "2024-10", "2024-11", "2024-12"],datasets:[{label:'Volume (₹M)',data:[27.4, 21.97, 24.33, 27.64, 25.32, 24.99, 25.07, 28.78, 27.36, 25.2, 24.54, 23.87],borderColor:AC,backgroundColor:AC+'22',fill:true,tension:.4,pointRadius:3,borderWidth:2.5}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{maxRotation:45,font:{size:9}}}}}});
+mc('c_pm1',{type:'bar',data:{labels:["UPI", "Card", "Wallet", "NetBanking", "NEFT"],datasets:[{data:[140.26, 89.6, 31.27, 30.7, 14.63],backgroundColor:PAL,borderRadius:7}]},options:{responsive:true,plugins:{legend:{display:false}}}});
+mc('c_ca1',{type:'doughnut',data:{labels:["Travel", "Finance", "Shopping", "Food", "Entertainment", "Telecom", "Health"],datasets:[{data:[58.35, 56.76, 50.82, 39.78, 34.92, 33.86, 31.98],backgroundColor:PAL,borderWidth:0,hoverOffset:10}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:9},color:'#c8c8e8',boxWidth:12}}}}});
+mc('c_rf1',{type:'doughnut',data:{labels:["Dormant", "At Risk", "Loyal", "Champion"],datasets:[{data:[713, 727, 749, 775],backgroundColor:['#00c9a7','#7c6dfa','#ffd166','#ff6b6b'],borderWidth:0,hoverOffset:10}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:10},color:'#c8c8e8',boxWidth:12}}}}});
+mc('c_me1',{type:'bar',data:{labels:["Uber", "MakeMyTrip", "Apollo Pharmacy", "Zomato", "Swiggy", "Zerodha", "HDFC Bank", "BookMyShow"],datasets:[{data:[22.27, 21.43, 20.15, 19.97, 19.8, 19.36, 18.75, 18.75],backgroundColor:GREEN,borderRadius:6}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
+mc('c_ci1',{type:'bar',data:{labels:["Delhi", "Chennai", "Mumbai", "Lucknow", "Jaipur", "Kolkata", "Pune", "Ahmedabad"],datasets:[{data:[33.19, 33.06, 31.88, 31.37, 31.11, 30.89, 30.88, 28.25],backgroundColor:YELLOW,borderRadius:6}]},options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}}}});
+</script>
+
+<footer>
+  <strong>Akash Pathak</strong> — FinTech Transaction Analytics<br/>
+  <a href="../index.html">🏠 Portfolio</a>
+  <a href="https://github.com/akash-pathak-scientist/fintech-transaction-analytics" target="_blank">🐙 GitHub Repo</a>
+  <a href="https://github.com/akash-pathak-scientist" target="_blank">👤 Profile</a>
+  <a href="https://akash-pathak-scientist.github.io" target="_blank">🌐 Website</a>
+</footer></body></html>
