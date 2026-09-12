@@ -551,6 +551,77 @@ footer strong{color:var(--accent);}
 </div><!-- /pgrid -->
 
 <!-- ═══════════════ TECH STACK ═══════════════ -->
+
+<!-- ═══════════ P07 DEEP LEARNING SPOTLIGHT ═══════════ -->
+<div class="sh"><h2>🧠 Deep Learning Spotlight — CNN Product Classifier</h2><span class="shb">Project 07 · 91.71% test acc</span><div class="shl"></div></div>
+<style>
+.spgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;}
+@media(max-width:920px){.spgrid{grid-template-columns:1fr;}}
+.spimg{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem;transition:border-color .2s;}
+.spimg:hover{border-color:rgba(255,209,102,.4);}
+.spimg img{width:100%;border-radius:8px;display:block;background:#fff;}
+.spcap{font-size:.72rem;color:var(--muted);margin-top:.55rem;text-align:center;line-height:1.5;}
+.sptiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.1rem;}
+@media(max-width:520px){.sptiles{grid-template-columns:repeat(2,1fr);}}
+.sptile{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:.95rem .7rem;text-align:center;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.sptile:hover{transform:translateY(-3px);border-color:var(--sc,#ffd166);}
+.sptile::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--sc,#ffd166);}
+.spv{font-size:1.3rem;font-weight:900;color:var(--white);}
+.spl{font-size:.58rem;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-top:.28rem;}
+.sprow{margin:.5rem 0;}
+.splink{display:inline-block;margin-top:.9rem;font-size:.74rem;font-weight:700;color:var(--yellow);text-decoration:none;border:1px solid rgba(255,209,102,.35);border-radius:9px;padding:.42rem .9rem;transition:all .2s;}
+.splink:hover{background:var(--yellow);color:#000;}
+.spex{display:grid;grid-template-columns:repeat(6,1fr);gap:.7rem;margin-top:1.1rem;}
+@media(max-width:760px){.spex{grid-template-columns:repeat(3,1fr);}}
+.spex div{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.5rem;text-align:center;}
+.spex img{width:100%;height:86px;object-fit:contain;background:#fff;border-radius:6px;}
+.spex p{font-size:.6rem;color:var(--muted);margin-top:.35rem;line-height:1.35;}
+</style>
+
+<div class="sp" id="spotlight">
+  <div class="spgrid">
+    <div>
+      <div class="spimg">
+        <img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/confusion_matrix.png" alt="CNN confusion matrix — test accuracy 91.71%"/>
+        <div class="spcap"><strong style="color:var(--white)">Real confusion matrix</strong> — held-out test set, n=3,114 · Apparel / Electronics / Home</div>
+      </div>
+    </div>
+    <div>
+      <div class="sptiles">
+        <div class="sptile" style="--sc:#00c9a7"><div class="spv" style="color:var(--green)">91.71%</div><div class="spl">Test Accuracy</div></div>
+        <div class="sptile" style="--sc:#ffd166"><div class="spv">92.10%</div><div class="spl">Peak Val Acc</div></div>
+        <div class="sptile" style="--sc:#7c6dfa"><div class="spv">20,754</div><div class="spl">Real Images</div></div>
+        <div class="sptile" style="--sc:#4ecdc4"><div class="spv">1.52M</div><div class="spl">Params (MobileNetV3-S)</div></div>
+        <div class="sptile" style="--sc:#ff9f43"><div class="spv">3,114</div><div class="spl">Held-out Test Imgs</div></div>
+        <div class="sptile" style="--sc:#ff6b6b"><div class="spv">84.1%</div><div class="spl">From-Scratch Baseline</div></div>
+      </div>
+      <div class="sc2-row"><span style="font-size:.78rem;color:var(--text)">Electronics → Home</span><span style="font-size:.72rem;color:var(--muted)">68 imgs · 6.6%</span></div>
+      <div class="pbar"><div class="pb2" data-w="6.6" style="background:var(--red)"></div></div>
+      <div class="sprow"></div>
+      <div class="sc2-row"><span style="font-size:.78rem;color:var(--text)">Home → Electronics</span><span style="font-size:.72rem;color:var(--muted)">63 imgs · 6.0%</span></div>
+      <div class="pbar"><div class="pb2" data-w="6.0" style="background:var(--orange)"></div></div>
+      <div class="sprow"></div>
+      <div class="sc2-row"><span style="font-size:.78rem;color:var(--text)">Apparel → Home</span><span style="font-size:.72rem;color:var(--muted)">51 imgs · 5.0%</span></div>
+      <div class="pbar"><div class="pb2" data-w="5.0" style="background:var(--yellow)"></div></div>
+      <div class="sprow"></div>
+      <div class="sc2-row"><span style="font-size:.78rem;color:var(--text)">Apparel → Electronics</span><span style="font-size:.72rem;color:var(--muted)">37 imgs · 3.6%</span></div>
+      <div class="pbar"><div class="pb2" data-w="3.6" style="background:var(--blue)"></div></div>
+      <div style="text-align:center">
+        <a class="splink" href="projects/p07-cnn.html" target="_blank">📊 Full CNN results &amp; error analysis ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="spex">
+    <div><img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-apparel_pred-electronics_B075HN3NNL.jpg" alt=""/><p>Apparel → Electronics</p></div>
+    <div><img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-apparel_pred-home_B009AXYJ0K.jpg" alt=""/><p>Apparel → Home</p></div>
+    <div><img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-electronics_pred-apparel_B002DQSL5A.jpg" alt=""/><p>Electronics → Apparel</p></div>
+    <div><img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-electronics_pred-home_B07BZ67B9H.jpg" alt=""/><p>Electronics → Home</p></div>
+    <div><img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-home_pred-apparel_B019GKUWHK.jpg" alt=""/><p>Home → Apparel</p></div>
+    <div><img loading="lazy" src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-home_pred-electronics_B0796GW6R6.jpg" alt=""/><p>Home → Electronics</p></div>
+  </div>
+  <p style="font-size:.68rem;color:var(--muted);margin-top:.6rem;text-align:center">Real misclassified test images — 20,754-image public dataset (Amazon Reviews 2023), seed-42 split, full provenance in the repo</p>
+</div>
+
 <div class="sh" id="stack"><h2>🛠️ Tech Stack</h2><span class="shb">Skills</span><div class="shl"></div></div>
 <div class="sgrid">
   <div class="sc2">
@@ -663,7 +734,7 @@ const io=new IntersectionObserver(entries=>{
     }
   });
 },{threshold:.1});
-document.querySelectorAll('.pcard,.sc2,.dc,.cert').forEach((el,i)=>{el.dataset.i=i;io.observe(el);});
+document.querySelectorAll('.pcard,.sc2,.dc,.cert,.sp').forEach((el,i)=>{el.dataset.i=i;io.observe(el);});
 
 /* COUNT-UP */
 function countUp(el,to){
