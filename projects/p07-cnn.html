@@ -1,0 +1,143 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Product-Image Classifier (CNN) | Akash Pathak</title>
+<style>
+:root{--bg:#07070d;--s1:#0f0f1a;--card:#141425;--border:#1e1e38;--border2:#28284a;
+  --ac:#ffd166;--green:#00c9a7;--red:#ff6b6b;--yellow:#ffd166;--blue:#4ecdc4;--orange:#ff9f43;
+  --white:#fff;--muted:#6b6b8a;--text:#c8c8e8;--font:'Segoe UI',system-ui,sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--s1);}
+::-webkit-scrollbar-thumb{background:var(--ac);border-radius:3px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(7,7,13,.95);
+  backdrop-filter:blur(18px);border-bottom:1px solid rgba(124,109,250,.14);
+  padding:.85rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.nlogo{font-weight:800;font-size:.95rem;color:var(--white);}
+.nright{display:flex;gap:.6rem;flex-wrap:wrap;}
+.nbtn{color:var(--ac);text-decoration:none;font-size:.78rem;font-weight:700;
+  padding:.32rem .75rem;border:1px solid rgba(124,109,250,.35);border-radius:8px;transition:all .2s;white-space:nowrap;}
+.nbtn:hover{background:var(--ac);color:var(--white);}
+.nbtn.back{background:rgba(124,109,250,.1);}
+.page{max-width:1300px;margin:0 auto;padding:1.5rem 2rem 4rem;}
+.hero{margin-bottom:1.8rem;}
+.hero h1{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:900;color:var(--white);letter-spacing:-1px;margin-bottom:.4rem;}
+.hero-sub{color:var(--muted);font-size:.92rem;line-height:1.6;}
+.hero-sub strong{color:var(--text);}
+.krow{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:.85rem;margin:1.4rem 0;}
+.kc{background:var(--card);border:1px solid var(--border);border-radius:13px;
+  padding:1.05rem 1.15rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s;}
+.kc:hover{transform:translateY(-3px);border-color:var(--kcc,var(--ac));}
+.kc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--kcc,var(--ac));}
+.kl{font-size:.63rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.28rem;}
+.kv{font-size:1.45rem;font-weight:900;color:var(--white);line-height:1;}
+.ks{font-size:.66rem;color:var(--muted);margin-top:.28rem;}
+.sh{display:flex;align-items:center;gap:.7rem;margin:2.2rem 0 1.1rem;}
+.sh h2{font-size:1rem;font-weight:800;color:var(--white);white-space:nowrap;}
+.shb{padding:.16rem .55rem;border-radius:20px;font-size:.63rem;font-weight:700;
+  background:rgba(124,109,250,.1);border:1px solid rgba(124,109,250,.3);color:var(--ac);}
+.shl{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.g1{display:grid;grid-template-columns:1fr;gap:1.1rem;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.1rem;}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:1.2rem;transition:border-color .2s;}
+.cc:hover{border-color:rgba(124,109,250,.25);}
+.ct{font-size:.8rem;font-weight:700;color:var(--white);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;}
+.ctb{padding:.12rem .44rem;border-radius:5px;font-size:.62rem;font-weight:700;background:rgba(124,109,250,.12);color:var(--ac);}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{background:rgba(124,109,250,.07);color:var(--ac);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.7px;padding:.6rem .9rem;
+  text-align:left;border-bottom:1px solid var(--border);}
+.tbl td{padding:.68rem .9rem;font-size:.82rem;border-bottom:1px solid rgba(30,30,56,.6);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(124,109,250,.04);}
+.badge{display:inline-block;padding:.13rem .48rem;border-radius:20px;font-size:.65rem;font-weight:700;}
+.bc{background:rgba(255,107,107,.15);color:var(--red);border:1px solid rgba(255,107,107,.3);}
+.bg{background:rgba(0,201,167,.15);color:var(--green);border:1px solid rgba(0,201,167,.3);}
+.by{background:rgba(255,209,102,.15);color:var(--yellow);border:1px solid rgba(255,209,102,.3);}
+.bb{background:rgba(78,205,196,.15);color:var(--blue);border:1px solid rgba(78,205,196,.3);}
+ul.rr{margin:.2rem 0 .2rem 1.15rem;font-size:.8rem;line-height:1.8;}
+.imgw{background:#fff;border-radius:10px;padding:.6rem;}
+.imgw img{width:100%;display:block;border-radius:6px;}
+.note{font-size:.72rem;color:var(--muted);margin-top:.5rem;line-height:1.6;}
+footer{border-top:1px solid var(--border);margin-top:3rem;padding:1.6rem 2rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;font-size:.78rem;}
+footer a{color:var(--ac);text-decoration:none;font-weight:700;}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr;}}
+</style></head>
+<body>
+<nav><div class="nlogo">🧠 P07 — Product-Image Classifier (CNN)</div>
+<div class="nright">
+  <a class="nbtn back" href="https://akash-pathak-scientist.github.io">← Portfolio</a>
+  <a class="nbtn" href="https://github.com/akash-pathak-scientist/product-image-classifier-cnn" target="_blank">🐙 GitHub</a>
+  <a class="nbtn" href="https://github.com/akash-pathak-scientist/product-image-classifier-cnn/releases/tag/v1.0.0" target="_blank">📦 Dataset + Model</a>
+</div></nav>
+<div class="page">
+<div class="hero">
+<h1>🧠 Product-Image Classifier (CNN)</h1>
+<p class="hero-sub">Flipkart-style catalogue auto-categorisation into <strong>Apparel / Electronics / Home</strong> — MobileNetV3-Small (1.52M params) fine-tuned on <strong>20,754 real product images</strong> from the public <strong>Amazon Reviews 2023</strong> corpus (Hou et al., 2024). Fully reproducible: stream-sampled metadata → image fetch → stratified split → train → confusion-matrix &amp; sub-category error analysis. One-click <strong>Google Colab</strong> notebook included.</p>
+</div>
+
+<div class="krow">
+  <div class="kc" style="--kcc:var(--green)"><div class="kl">Test Accuracy</div><div class="kv" style="color:var(--green)">91.71%</div><div class="ks">n=3,114 held-out · flip-TTA</div></div>
+  <div class="kc" style="--kcc:var(--yellow)"><div class="kl">Best Val Accuracy</div><div class="kv">92.10%</div><div class="ks">peak epoch 5/8 (warm-started)</div></div>
+  <div class="kc" style="--kcc:var(--blue)"><div class="kl">Dataset Size</div><div class="kv">20,754</div><div class="ks">real product images · 3 classes</div></div>
+  <div class="kc" style="--kcc:var(--orange)"><div class="kl">Model Size</div><div class="kv">1.52M</div><div class="ks">params · MobileNetV3-Small @224px</div></div>
+  <div class="kc" style="--kcc:var(--red)"><div class="kl">From-Scratch Baseline</div><div class="kv">84.1%</div><div class="ks">ProductCNN 0.63M params — transfer wins</div></div>
+  <div class="kc" style="--kcc:var(--green)"><div class="kl">Split</div><div class="kv">70/15/15</div><div class="ks">14,527 / 3,113 / 3,114 · stratified, seed 42</div></div>
+</div>
+
+<div class="sh"><h2>📋 Per-Class Metrics</h2><span class="shb">Test set n=3114</span><div class="shl"></div></div>
+<div class="cc"><table class="tbl"><tr><th>Class</th><th>Precision</th><th>Recall</th><th>F1-score</th><th>Support</th></tr><tr><td><span class="badge bb">Apparel</span></td><td>0.9602</td><td>0.9145</td><td>0.9368</td><td>1029</td></tr><tr><td><span class="badge bb">Electronics</span></td><td>0.9052</td><td>0.9200</td><td>0.9126</td><td>1038</td></tr><tr><td><span class="badge bb">Home</span></td><td>0.8897</td><td>0.9169</td><td>0.9031</td><td>1047</td></tr>
+<tr><td><strong>overall accuracy</strong></td><td>—</td><td>—</td><td><strong>0.9171</strong></td><td>3114</td></tr></table>
+<div class="note">Horizontal-flip test-time augmentation (disclosed in README; disable with --no-tta). All numbers from the fixed seed-42 split — nothing re-split after training.</div></div>
+
+<div class="sh"><h2>🔢 Confusion Matrix</h2><span class="shb">Counts + row-normalised</span><div class="shl"></div></div>
+<div class="g1"><div class="cc"><div class="imgw"><img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/confusion_matrix.png" alt="confusion matrix"/></div></div>
+<div class="cc"><div class="ct">Misclassified volume per pair</div><table class="tbl"><tr><th>True → Predicted</th><th>Count</th><th>Share</th></tr><tr><td>Electronics → Home</td><td><strong>68</strong></td><td>6.6% of true Electronics</td></tr><tr><td>Home → Electronics</td><td><strong>63</strong></td><td>6.0% of true Home</td></tr><tr><td>Apparel → Home</td><td><strong>51</strong></td><td>5.0% of true Apparel</td></tr><tr><td>Apparel → Electronics</td><td><strong>37</strong></td><td>3.6% of true Apparel</td></tr><tr><td>Home → Apparel</td><td><strong>24</strong></td><td>2.3% of true Home</td></tr><tr><td>Electronics → Apparel</td><td><strong>15</strong></td><td>1.5% of true Electronics</td></tr></table></div></div>
+
+<div class="sh"><h2>🔎 Which pairs fumble — and why</h2><span class="shb">Sub-category evidence</span><div class="shl"></div></div>
+<div class="cc" style="margin-bottom:1rem;"><div class="ct">🔀 Electronics → Home <span class="ctb">68 images</span></div><ul style="margin:.3rem 0 .3rem 1.1rem;font-size:.8rem;line-height:1.75;"><li>**Computers & Accessories** - 17 images, e.g. *"1080P Webcam with Microphone, Computer USB Web Camera Full HD for Windows 10 8 7 XP Mac OS"*</li><li>**Unknown** - 13 images, e.g. *"EOS Meraki MX60 Enterprise License and Support, 3 Years, Electronic Delivery"*</li><li>**Camera & Photo** - 11 images, e.g. *"MyRingLight - Fluorescent Ring Light, 5400K, 65watts, Photo and Video"*</li></ul></div><div class="cc" style="margin-bottom:1rem;"><div class="ct">🔀 Home → Electronics <span class="ctb">63 images</span></div><ul style="margin:.3rem 0 .3rem 1.1rem;font-size:.8rem;line-height:1.75;"><li>**Kitchen & Dining** - 22 images, e.g. *"De'Longhi Stilosa Manual Espresso Machine, Latte & Cappuccino Maker & Stainless Steel Milk"*</li><li>**Home Décor Products** - 11 images, e.g. *"Karlsson Wall Clock Platinum Record Aluminum, Silver"*</li><li>**Unknown** - 9 images, e.g. *"Grocery plastic Bag Dispenser,Brushed Stainless Steel Organizer,Wall Mount Trash Holder,Re"*</li></ul></div><div class="cc" style="margin-bottom:1rem;"><div class="ct">🔀 Apparel → Home <span class="ctb">51 images</span></div><ul style="margin:.3rem 0 .3rem 1.1rem;font-size:.8rem;line-height:1.75;"><li>**Other apparel (title-derived)** - 17 images, e.g. *"Pierced Owl - Organic Coconut Wood Saddle Fit Solid Plugs, Sold as a Pair"*</li><li>**Jewelry & Watches (title-derived)** - 7 images, e.g. *"10K Yellow Gold Cherub Angel Pendant Praying Angel 1 inch"*</li><li>**Bags & Wallets (title-derived)** - 5 images, e.g. *"S.CHU Women's A Mom And A Nurse Tote Handbag Stripes Weave Shoulder Bag Black"*</li></ul></div><div class="cc" style="margin-bottom:1rem;"><div class="ct">🔀 Apparel → Electronics <span class="ctb">37 images</span></div><ul style="margin:.3rem 0 .3rem 1.1rem;font-size:.8rem;line-height:1.75;"><li>**Jewelry & Watches (title-derived)** - 14 images, e.g. *"SUPERDAVES SUPERSTORE Kurdistan Red Country Flag C' Bracelet Wristband. for Adults & Teens"*</li><li>**Other apparel (title-derived)** - 9 images, e.g. *"Magnetic Backgammon Board Game"*</li><li>**Shoes (title-derived)** - 3 images, e.g. *"Paw Patrol Skye & Everest Toddler Girls Slippers, Medium (7/8)"*</li></ul></div><div class="cc" style="margin-bottom:1rem;"><div class="ct">🔀 Home → Apparel <span class="ctb">24 images</span></div><ul style="margin:.3rem 0 .3rem 1.1rem;font-size:.8rem;line-height:1.75;"><li>**Home Décor Products** - 9 images, e.g. *"Juvale Blue Nautical Poop Deck Hanging Wall Sign Beach Ocean Theme (12 x 7.5 In)"*</li><li>**Kitchen & Dining** - 6 images, e.g. *"YUTRO Fashion Women's Winter Slouchy Fleece Lined Wool Beanie Hat One Size OCEAN BLUE"*</li><li>**Vacuums & Floor Care** - 2 images, e.g. *"Oreck Belt, Corded U7000 Series"*</li></ul></div><div class="cc" style="margin-bottom:1rem;"><div class="ct">🔀 Electronics → Apparel <span class="ctb">15 images</span></div><ul style="margin:.3rem 0 .3rem 1.1rem;font-size:.8rem;line-height:1.75;"><li>**Wearable Technology** - 3 images, e.g. *"VANLUCK Strap Compatible with Mi Band 5/XiaoMi Band 6, Replacement Leather Strap Wristband"*</li><li>**Computers & Accessories** - 3 images, e.g. *"hBARSCI Violin Player Vinyl Decal - 5 Inches - for Cars, Trucks, Windows, Laptops, Tablets"*</li><li>**Television & Video** - 2 images, e.g. *"Power Acoustik PMD-103CM BG 10.4-Inch Overhead Monitor with Built-in DVD Player"*</li></ul></div>
+<div class="note">Sub-category names marked <em>(title-derived)</em>: the corpus's Amazon-Fashion slice ships without a category tree upstream, so Apparel sub-categories are derived from product titles with a transparent keyword rule. Examples include genuine upstream label noise (e.g. a board game filed under Apparel) — reported as-is.</div>
+
+<div class="sh"><h2>📸 Real misclassified test images</h2><span class="shb">Hardest examples</span><div class="shl"></div></div>
+<div class="g3"><div class="cc" style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-apparel_pred-electronics_B075HN3NNL.jpg" style="width:100%;max-width:200px;height:150px;object-fit:contain;background:#fff;border-radius:8px;" alt="misclassified"/>
+      <div style="font-size:.72rem;margin-top:.5rem;color:var(--muted)">Apparel → <span style="color:var(--red);font-weight:700">Electronics</span></div></div><div class="cc" style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-apparel_pred-home_B009AXYJ0K.jpg" style="width:100%;max-width:200px;height:150px;object-fit:contain;background:#fff;border-radius:8px;" alt="misclassified"/>
+      <div style="font-size:.72rem;margin-top:.5rem;color:var(--muted)">Apparel → <span style="color:var(--red);font-weight:700">Home</span></div></div><div class="cc" style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-electronics_pred-apparel_B002DQSL5A.jpg" style="width:100%;max-width:200px;height:150px;object-fit:contain;background:#fff;border-radius:8px;" alt="misclassified"/>
+      <div style="font-size:.72rem;margin-top:.5rem;color:var(--muted)">Electronics → <span style="color:var(--red);font-weight:700">Apparel</span></div></div><div class="cc" style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-electronics_pred-home_B07BZ67B9H.jpg" style="width:100%;max-width:200px;height:150px;object-fit:contain;background:#fff;border-radius:8px;" alt="misclassified"/>
+      <div style="font-size:.72rem;margin-top:.5rem;color:var(--muted)">Electronics → <span style="color:var(--red);font-weight:700">Home</span></div></div><div class="cc" style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-home_pred-apparel_B019GKUWHK.jpg" style="width:100%;max-width:200px;height:150px;object-fit:contain;background:#fff;border-radius:8px;" alt="misclassified"/>
+      <div style="font-size:.72rem;margin-top:.5rem;color:var(--muted)">Home → <span style="color:var(--red);font-weight:700">Apparel</span></div></div><div class="cc" style="text-align:center;">
+      <img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/examples_misclassified/true-home_pred-electronics_B0796GW6R6.jpg" style="width:100%;max-width:200px;height:150px;object-fit:contain;background:#fff;border-radius:8px;" alt="misclassified"/>
+      <div style="font-size:.72rem;margin-top:.5rem;color:var(--muted)">Home → <span style="color:var(--red);font-weight:700">Electronics</span></div></div></div>
+
+<div class="sh"><h2>📈 Training Curves</h2><span class="shb">Loss & accuracy vs epoch</span><div class="shl"></div></div>
+<div class="g1"><div class="cc"><div class="imgw"><img src="https://raw.githubusercontent.com/akash-pathak-scientist/product-image-classifier-cnn/main/reports/training_curves.png" alt="training curves"/></div>
+<div class="note">Two stages: (1) 160px warm-up, AdamW head 7e-4 / trunk 1.4e-4; (2) 224px fine-tune, AdamW 2.5e-4 cosine, label smoothing 0.05, batch 24, early stop. Full provenance: reports/TRAINING_LOG_NOTE.md in the repo.</div></div></div>
+
+<div class="sh"><h2>🧪 Pipeline</h2><span class="shb">100% reproducible</span><div class="shl"></div></div>
+<div class="g2"><div class="cc"><div class="ct">📥 Data</div><ul class="rr">
+<li>Stream-samples public JSONL via HTTP range requests (no multi-GB download)</li>
+<li>Parallel fetch + Pillow validation + EXIF fix + SHA-1 content dedup</li>
+<li>165 dead URLs &amp; 81 duplicate images dropped automatically</li></ul></div>
+<div class="cc"><div class="ct">🏋️ Training</div><ul class="rr">
+<li>torchvision transforms: RandomResizedCrop, flip, rotation, colour jitter</li>
+<li>AdamW + cosine annealing + label smoothing 0.05</li>
+<li>Early stopping on val accuracy; best checkpoint tracked automatically</li></ul></div></div>
+
+<div class="g2" style="margin-top:1.1rem;"><div class="cc"><div class="ct">📓 Reproduce in Colab</div><ul class="rr">
+<li>notebooks/product_image_classifier_colab.ipynb — Runtime → T4 GPU → Run all</li>
+<li>Downloads dataset.zip from the v1.0.0 release (images + splits + metadata)</li>
+<li>Trains both models; prints the same tables &amp; confusion matrix</li></ul></div>
+<div class="cc"><div class="ct">🔮 Single-image inference</div><ul class="rr">
+<li>python -m src.predict path/to/product.jpg → ranked class probabilities</li>
+<li>Checkpoint stores arch, classes, img size &amp; normalisation stats</li></ul></div></div>
+
+<footer>
+  <a href="https://github.com/akash-pathak-scientist/product-image-classifier-cnn" target="_blank">🐙 GitHub Repo</a>
+  <a href="https://github.com/akash-pathak-scientist/product-image-classifier-cnn/releases/tag/v1.0.0" target="_blank">📦 dataset.zip (253MB) + best.pt</a>
+  <a href="https://colab.research.google.com/github/akash-pathak-scientist/product-image-classifier-cnn/blob/main/notebooks/product_image_classifier_colab.ipynb" target="_blank">📓 Open in Colab</a>
+  <a href="https://akash-pathak-scientist.github.io" target="_blank">← Back to Portfolio</a>
+</footer>
+</div></body></html>
